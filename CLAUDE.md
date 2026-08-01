@@ -902,12 +902,45 @@ It now diffs the `tar -tv` listing as well. **A reproducibility check that only
 looks at content is not a reproducibility check** — and this one was written in
 the same hour as the guarantee it was supposed to enforce.
 
-The other way the tarball drifts is more mundane and is guarded in
-`build-deb.sh`: everything outside `debian/` goes into it, so any later README
-or CLAUDE.md commit gives an upload a different orig tarball than the published
-one. `SIGNED_SOURCE=1` refuses when the tree differs from the tag outside
-`debian/`, and only outside `debian/` — a Debian-only revision legitimately
-reuses the published tarball.
+**An upload takes its upstream source from the tag, not from the working
+tree.** Everything outside `debian/` goes into the tarball, so one commit in
+`tools/` or a line in `README.md` silently gives an upload a different orig
+tarball than the published one — and the sponsor's uscan then finds a checksum
+the `.dsc` does not have. That happened twice within an hour of the first
+release, which is why the first attempt at this, a guard that refused to build,
+was the wrong shape: it made every documentation commit a blocker.
+
+`SIGNED_SOURCE=1` therefore builds the tarball from `git archive v$ver` and
+takes `debian/` from the working tree. That is not a workaround; it is what the
+`3.0 (quilt)` split means. Upstream 0.1.0 is frozen at `v0.1.0` and the
+packaging goes on changing beside it, which is how `Standards-Version` could go
+to 4.7.4 and `debian/upstream/metadata` be added without touching the published
+asset at all. Everything other than an upload still builds from the working
+tree, because the point of a local build is to test what was just edited.
+
+### What mentors' own QA said
+
+Worth recording because none of it is visible from here. The upload's page runs
+a newer lintian than a workstation is likely to have, and adds checks of its
+own:
+
+```
+–  Watch file is not present                    mentors' own warning
+I  out-of-date-standards-version   4.7.3 (current is 4.7.4)
+X  upstream-metadata-file-is-missing
+X  very-long-line-length-in-source-file  584 > 512 [corpus/proofed.tsv:31]
+```
+
+The watch file is flagged there as a warning in its own right, not merely as a
+lintian info — the third independent contradiction of the idea that a corpus
+from 1905 gives nothing to watch. `debian/watch` tracks *this package's*
+upstream, which is the GitHub repository, and it exists.
+
+`out-of-date-standards-version` could not have been found locally: lintian
+2.129 here still believes 4.7.3 is current and reports 4.7.4 as
+`newer-standards-version`. Policy 4.7.4 (March 2026) changes only linker
+scripts in `*.so` and a `non-free-firmware` copyright requirement, so the bump
+is honest rather than a number. The long line is corpus data and stays.
 
 Two things that will bite whoever touches this next:
 

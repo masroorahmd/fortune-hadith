@@ -6,7 +6,7 @@ Build-Depends:
  debhelper-compat (= 13),
  fortune-mod,
  python3:any,
-Standards-Version: 4.7.3
+Standards-Version: 4.7.4
 # Both of these are redundant with dpkg >= 1.22.13, which defaults them, and
 # lintian 2.129 reports them as such -- but only at pedantic level. The older
 # lintian on an Ubuntu LTS runner reports their *absence* as a warning. Kept,

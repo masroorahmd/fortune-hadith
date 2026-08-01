@@ -22,19 +22,40 @@ if [ $# -gt 0 ]; then shift; fi # the rest goes to dpkg-buildpackage
 rm -rf "$stage"
 mkdir -p "$stage/$pkg-$ver"
 
-# Everything not gitignored, not an editor's, and not a build product.
-tar -C "$here" -cf - \
-	--exclude=./debian \
-	--exclude=./fortune \
-	--exclude=./corpus/raw \
-	--exclude=./reference \
-	--exclude=./pilot/data \
-	--exclude='./pilot/out*' \
-	--exclude=./.git \
-	--exclude=./.idea \
-	--exclude='*/__pycache__' \
-	--exclude='*.pyc' \
-	. | tar -C "$stage/$pkg-$ver" -xf -
+# Where the upstream source comes from.
+#
+# An upload has to carry the orig tarball that was published, byte for byte, or
+# the sponsor's uscan finds a checksum the .dsc does not have. Taking it from
+# the working tree cannot give that for long: everything outside debian/ goes
+# into the tarball, so one commit in tools/ or a line in README.md silently
+# changes it. That happened twice within an hour of the first release.
+#
+# So an upload builds the tarball from the release tag, and everything else
+# builds it from the working tree. That is not a workaround, it is what the
+# 3.0 (quilt) split means: upstream 0.1.0 is frozen at v0.1.0 and debian/ goes
+# on changing beside it. A local build still wants the working tree, because
+# the point of a local build is to test what you just edited.
+if [ "${SIGNED_SOURCE:-0}" = "1" ] &&
+	git -C "$here" rev-parse -q --verify "refs/tags/v$ver" >/dev/null; then
+	echo "upstream source from tag v$ver (debian/ from the working tree)"
+	git -C "$here" archive --prefix="$pkg-$ver/" "v$ver" |
+		tar -C "$stage" -xf -
+	rm -rf "$stage/$pkg-$ver/debian"
+else
+	# Everything not gitignored, not an editor's, and not a build product.
+	tar -C "$here" -cf - \
+		--exclude=./debian \
+		--exclude=./fortune \
+		--exclude=./corpus/raw \
+		--exclude=./reference \
+		--exclude=./pilot/data \
+		--exclude='./pilot/out*' \
+		--exclude=./.git \
+		--exclude=./.idea \
+		--exclude='*/__pycache__' \
+		--exclude='*.pyc' \
+		. | tar -C "$stage/$pkg-$ver" -xf -
+fi
 
 # Reproducible tarball: sorted names, no owner, timestamp or permission
 # variation.
@@ -66,30 +87,6 @@ tar -C "$stage" \
 #
 # The key is selected by the address in debian/changelog, the same rule
 # dpkg-buildpackage uses, so there is one place that decides which key signs.
-# An upload has to carry the orig tarball that was published, byte for byte,
-# or the sponsor's uscan finds a checksum that does not match the .dsc.
-#
-# The trap is that this diverges silently and for innocent reasons: anything
-# outside debian/ goes into the tarball, so a later README or CLAUDE.md commit
-# is enough. It happened within an hour of the first release.
-#
-# Only files outside debian/ are compared, because that is exactly what the
-# tarball holds -- a Debian-only change (0.1.0-2) legitimately reuses the
-# published tarball and must not be blocked here.
-if [ "${SIGNED_SOURCE:-0}" = "1" ] &&
-	git -C "$here" rev-parse -q --verify "refs/tags/v$ver" >/dev/null; then
-	if ! git -C "$here" diff --quiet "v$ver" -- . ':(exclude)debian'; then
-		echo "error: the tree differs from tag v$ver outside debian/:" >&2
-		git -C "$here" diff --stat "v$ver" -- . ':(exclude)debian' >&2
-		echo >&2
-		echo "  The upload would carry a different orig tarball than the one" >&2
-		echo "  published at v$ver, and uscan would report the mismatch." >&2
-		echo "  Build the upload from the tag (git worktree add ... v$ver)," >&2
-		echo "  or cut a new upstream version." >&2
-		exit 1
-	fi
-fi
-
 if [ "${SIGN_ORIG:-${SIGNED_SOURCE:-0}}" = "1" ]; then
 	signer=$(dpkg-parsechangelog -l "$here/debian/changelog" -S Maintainer |
 		sed 's/.*<\(.*\)>.*/\1/')

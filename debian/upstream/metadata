@@ -1,0 +1,12 @@
+---
+# DEP-12. Upstream and maintainer are the same person here, so these all point
+# at the one repository -- which is the honest answer rather than a placeholder:
+# there is no separate upstream to name.
+#
+# Bug-Database and Repository are the two that matter; without them lintian
+# reports upstream-metadata-missing-bug-tracking and
+# upstream-metadata-missing-repository, which is what mentors' QA surfaced.
+Bug-Database: https://github.com/masroorahmd/fortune-hadith/issues
+Bug-Submit: https://github.com/masroorahmd/fortune-hadith/issues/new
+Repository: https://github.com/masroorahmd/fortune-hadith.git
+Repository-Browse: https://github.com/masroorahmd/fortune-hadith
