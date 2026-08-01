@@ -43,6 +43,28 @@ tar -C "$stage" \
 	--owner=0 --group=0 --numeric-owner \
 	-czf "$stage/${pkg}_${ver}.orig.tar.gz" "$pkg-$ver"
 
+# The upstream signature.
+#
+# debian/upstream/signing-key.asc is part of the packaging, and lintian then
+# requires an .asc beside the orig tarball -- W: orig-tarball-missing-upstream-
+# signature otherwise. dpkg-source picks the file up on its own and lists it in
+# the .dsc, so signing it here is all that is needed.
+#
+# Off by default, because a plain local build should not touch the key and
+# because CI has no key to touch. SIGNED_SOURCE=1 turns it on, since a mentors
+# upload does have to carry the signature.
+#
+# The key is selected by the address in debian/changelog, the same rule
+# dpkg-buildpackage uses, so there is one place that decides which key signs.
+if [ "${SIGN_ORIG:-${SIGNED_SOURCE:-0}}" = "1" ]; then
+	signer=$(dpkg-parsechangelog -l "$here/debian/changelog" -S Maintainer |
+		sed 's/.*<\(.*\)>.*/\1/')
+	echo "signing ${pkg}_${ver}.orig.tar.gz as $signer"
+	gpg --armor --detach-sign --local-user "$signer" \
+		--output "$stage/${pkg}_${ver}.orig.tar.gz.asc" \
+		"$stage/${pkg}_${ver}.orig.tar.gz"
+fi
+
 cp -a "$here/debian" "$stage/$pkg-$ver/debian"
 
 cd "$stage/$pkg-$ver"
@@ -62,4 +84,4 @@ fi
 
 echo
 echo "built in $stage:"
-ls -1 "$stage" | grep -E '\.(deb|dsc|changes|tar\.[gx]z)$' | sed 's/^/  /'
+ls -1 "$stage" | grep -E '\.(deb|dsc|changes|tar\.[gx]z|asc)$' | sed 's/^/  /'

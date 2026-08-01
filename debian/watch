@@ -1,0 +1,23 @@
+# The upstream tarball is a release asset on GitHub, not the tarball GitHub
+# generates from the tag. Two reasons: the generated one cannot be signed,
+# because GitHub and not upstream produces it, and its byte-for-byte content is
+# GitHub's to change. The asset is what tools/build-deb.sh built, so there is
+# exactly one such tarball in the world and it carries a signature.
+#
+# version=4 rather than 5. devscripts understands 5, but lintian 2.12x knows
+# only 2, 3 and 4 and reports anything else as unknown-debian-watch-file-
+# standard -- and the CI runner's lintian is one of those.
+#
+# pgpmode=auto lets uscan find the .asc beside the tarball itself, so no
+# pgpsigurlmangle rule has to be maintained here. It verifies against
+# debian/upstream/signing-key.asc.
+#
+# The tag is the upstream version and carries no Debian revision: v0.1.0, not
+# v0.1.0-1. uscan tracks upstream, and -1 is packaging.
+#
+# Check with:  uscan --no-download --verbose
+version=4
+
+opts="pgpmode=auto" \
+  https://github.com/masroorahmd/fortune-hadith/releases \
+  (?:.*/)?@PACKAGE@@ANY_VERSION@@ARCHIVE_EXT@

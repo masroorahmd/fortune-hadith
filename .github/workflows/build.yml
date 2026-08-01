@@ -5,9 +5,12 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   package:
+    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -35,11 +38,25 @@ jobs:
       # older than the policy this package targets. It fires on the runner and
       # not on a current unstable, and the fix it implies -- downgrading
       # Standards-Version to match an outdated checker -- would be backwards.
+      #
+      # orig-tarball-missing-upstream-signature is suppressed because it is
+      # structurally unavoidable here and nowhere else. Since
+      # debian/upstream/signing-key.asc exists, lintian wants an .asc beside
+      # the orig tarball -- and the key that makes one is the Debian upload
+      # key, which deliberately does not live in a GitHub secret. So this job
+      # cannot ever satisfy the tag.
+      #
+      # Suppressing a tag that is hiding a real defect is how the corpus got
+      # its worst bugs, so this one does not stand alone: the verify-release
+      # job below runs lintian on the *published* source without the
+      # suppression, which is the build where the signature does exist and
+      # where its absence would be a genuine fault.
       - name: Lintian
         run: |
           lintian --version
           lintian --profile debian --pedantic --fail-on error,warning \
             --suppress-tags newer-standards-version \
+            --suppress-tags orig-tarball-missing-upstream-signature \
             "$RUNNER_TEMP"/hadith-build/hadith_*_amd64.changes
 
       # Installed separately and in this order, so that a data package which
@@ -82,3 +99,95 @@ jobs:
             ${{ runner.temp }}/hadith-build/*.deb
             ${{ runner.temp }}/hadith-build/*.dsc
             ${{ runner.temp }}/hadith-build/*.tar.*
+
+  # What a sponsor will do, done automatically the moment a release appears.
+  #
+  # The release is cut from a workstation by tools/release.sh, because the key
+  # that signs it is the Debian upload key and does not belong in a GitHub
+  # secret. That leaves one thing unverified -- that what was uploaded is what
+  # the tag says it is -- and this job is what closes it. It needs no private
+  # key to do so.
+  verify-release:
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TAG: ${{ github.event.release.tag_name }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            build-essential debhelper devscripts fakeroot fortune-mod \
+            gnupg lintian python3
+
+      - name: Download the published assets
+        run: |
+          mkdir -p "$RUNNER_TEMP/rel"
+          gh release download "$TAG" --dir "$RUNNER_TEMP/rel" \
+            --repo "$GITHUB_REPOSITORY"
+          ls -l "$RUNNER_TEMP/rel"
+
+      # gpgv against a keyring built from debian/upstream/signing-key.asc, not
+      # against whatever is in the runner's keyring: that key file is what a
+      # sponsor's uscan will trust, so it is the one that has to work.
+      - name: Signatures verify against the packaged key
+        run: |
+          gpg --dearmor < debian/upstream/signing-key.asc > "$RUNNER_TEMP/ring.gpg"
+          cd "$RUNNER_TEMP/rel"
+          gpgv --keyring "$RUNNER_TEMP/ring.gpg" \
+            hadith-*.tar.gz.asc hadith-*.tar.gz
+          gpgv --keyring "$RUNNER_TEMP/ring.gpg" SHA256SUMS.asc SHA256SUMS
+          sha256sum -c SHA256SUMS
+
+      # Compared unpacked rather than byte for byte. The tar stream is
+      # deterministic -- sorted names, the changelog timestamp, numeric owner
+      # zero -- but the gzip that wraps it is not guaranteed to emit identical
+      # bytes across versions, and a mismatch there would be a false alarm
+      # about the thing that actually matters, which is the content.
+      - name: Published tarball is what the tag contains
+        run: |
+          ./tools/build-deb.sh "$RUNNER_TEMP/ours" >/dev/null
+          mkdir -p "$RUNNER_TEMP/a" "$RUNNER_TEMP/b"
+          tar -C "$RUNNER_TEMP/a" -xf "$RUNNER_TEMP"/rel/hadith-*.tar.gz
+          tar -C "$RUNNER_TEMP/b" -xf "$RUNNER_TEMP"/ours/hadith_*.orig.tar.gz
+          diff -r "$RUNNER_TEMP/a" "$RUNNER_TEMP/b"
+
+      # The sponsor's build: the published tarball plus debian/, nothing else.
+      # This lintian run carries no orig-tarball-missing-upstream-signature
+      # suppression -- here the signature does exist, so its absence would be a
+      # real fault rather than a structural one.
+      - name: The published tarball builds, and is lintian-clean signed
+        run: |
+          ver=$(dpkg-parsechangelog -l debian/changelog -S Version)
+          up=${ver%-*}
+          w=$RUNNER_TEMP/sponsor; mkdir -p "$w"
+          cp "$RUNNER_TEMP"/rel/hadith-*.tar.gz     "$w/hadith_$up.orig.tar.gz"
+          cp "$RUNNER_TEMP"/rel/hadith-*.tar.gz.asc "$w/hadith_$up.orig.tar.gz.asc"
+          tar -C "$w" -xf "$w/hadith_$up.orig.tar.gz"
+          cp -a debian "$w/hadith-$up/debian"
+          cd "$w/hadith-$up" && dpkg-buildpackage -us -uc
+          lintian --profile debian --pedantic --fail-on error,warning \
+            --suppress-tags newer-standards-version \
+            ../hadith_"$ver"_*.changes
+
+      # uscan is the point of debian/watch, so run the real thing rather than
+      # only parsing the file. --download-current-version because the release
+      # being verified *is* the packaged version, and uscan would otherwise
+      # report itself up to date and download nothing.
+      #
+      # It exits 1 when the pattern matches nothing (checked), but the .asc is
+      # asserted separately: a watch file that downloads the tarball and
+      # silently skips verification looks identical in the exit code.
+      - name: uscan finds and verifies the release
+        run: |
+          mkdir -p "$RUNNER_TEMP/uscan"
+          uscan --verbose --download-current-version \
+            --destdir "$RUNNER_TEMP/uscan"
+          ls -l "$RUNNER_TEMP/uscan"
+          test -f "$RUNNER_TEMP"/uscan/hadith_*.orig.tar.gz
+          test -f "$RUNNER_TEMP"/uscan/hadith_*.orig.tar.gz.asc

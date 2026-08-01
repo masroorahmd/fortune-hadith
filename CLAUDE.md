@@ -512,6 +512,8 @@ tools/modernise.py          1905 text -> corpus/suhrawardy-modern.jsonl
 tools/modernise_check.py    does the modern text still say the same thing
 tools/make_fortune.py       jsonl     -> fortune/hadith-suhrawardy
 tools/build-deb.sh          the tree  -> hadith_<version>_all.deb, out of tree
+tools/release.sh            the tree  -> a signed GitHub release, from a
+                            workstation only — see *Releases on GitHub*
 ```
 
 Run in that order. The first four are needed only to *change* the corpus: the
@@ -799,6 +801,87 @@ single-package 0.1.0-1 was never released — the split happened before the firs
 upload. If a version of `hadith` owning the cookie files ever *does* reach an
 archive, `fortunes-hadith` will need both against it, or the upgrade will fail
 on a file conflict.
+
+### Releases on GitHub, and what a signature is worth here
+
+Set up 2026-08-01. The Debian route is months; a release is what lets someone
+install today, and — the part that actually pays — it is what gives the source
+package a public upstream tarball to point at.
+
+**Signing the `.deb` itself would be theatre.** `/etc/dpkg/dpkg.cfg` ships
+`no-debsig`, with the comment *"since the distribution is not using embedded
+signatures, debsig-verify would reject all packages"*, and `debsig-verify` is
+not installed. Nothing on a Debian or Ubuntu system ever checks such a
+signature. So the signatures are detached, over `SHA256SUMS` and over the
+tarball, and are checked by hand or by `uscan`.
+
+**The orig tarball was the real gap.** `3.0 (quilt)` splits a source package
+into an upstream tarball and the packaging, so that a third party can fetch the
+former independently and hold it against the checksum in the `.dsc`. That was
+impossible: `build-deb.sh` invented the tarball from the working tree, and it
+existed nowhere else. A release asset plus `debian/watch` plus
+`debian/upstream/signing-key.asc` closes it — `uscan --verify` now answers the
+question a sponsor would otherwise have to take on trust.
+
+**The asset is ours, not GitHub's generated tag tarball.** The measured
+difference between the two is exactly `debian/` and nothing else — `fortune/`,
+`reference/` and `corpus/raw` are gitignored, so `git archive` never had them
+either, and an earlier note here that claimed otherwise was wrong. A `debian/`
+inside the orig tarball would in fact be harmless, since `dpkg-source(1)`
+removes any pre-existing one before applying the debian tarball, and no lintian
+tag objects. So the generated tarball was rejected on the other two grounds:
+GitHub produces it, so it cannot carry our signature, and its bytes are
+GitHub's to change.
+
+**The key does not go into a GitHub secret.** It is the Debian upload key —
+`dpkg-buildpackage` selects it by the address in `debian/changelog` — so a
+compromise of the repository would be a compromise of the Debian identity.
+`tools/release.sh` therefore runs on a workstation and CI never signs anything.
+It defaults to a dry run; `--publish` is what tags, pushes and publishes.
+
+That decision costs something, and the cost is where the interesting part is.
+Since `debian/upstream/signing-key.asc` is now in the packaging, lintian wants
+an `.asc` beside every orig tarball it sees:
+
+```
+W: hadith source: orig-tarball-missing-upstream-signature
+```
+
+and the CI runs `--fail-on error,warning`. The ordinary CI build has no key and
+structurally cannot satisfy that, so it suppresses the tag. **A suppression is
+how this project's worst bugs survived**, so it does not stand alone: a
+`verify-release` job fires on `release: published` and does what a sponsor
+does, with no private key —
+
+- `gpgv` against a keyring built from `debian/upstream/signing-key.asc`, not
+  from the runner's keyring, because that file is what a sponsor's uscan will
+  trust
+- unpacks the published tarball and the freshly built one and `diff -r`s them,
+  so the release provably contains the tagged commit. Compared **unpacked**:
+  the tar stream is deterministic, but the gzip wrapping it is not guaranteed
+  to be byte-stable across versions, and a mismatch there would be a false
+  alarm about the one thing that matters, the content.
+- rebuilds from the published tarball plus `debian/` — and runs lintian
+  **without** the suppression, since there the signature does exist
+- runs `uscan --download-current-version`, and asserts the `.asc` landed.
+  uscan exits 1 on no match, but a watch file that downloads and silently
+  skips verification has the same exit code.
+
+`version=4` in `debian/watch`, not 5. devscripts 2.26 understands 5, but the
+lintian on an Ubuntu runner knows only 2, 3 and 4 and would report the file as
+an unknown standard.
+
+Two things that will bite whoever touches this next:
+
+- **The tag carries the upstream version, not the Debian revision** — `v0.1.0`,
+  never `v0.1.0-1`. uscan tracks upstream. A Debian-only change (`0.1.0-2`)
+  reuses the published tarball and needs no release at all, which is why
+  `release.sh` refuses an existing tag rather than clobbering it.
+- **The repository is `fortune-hadith` and the source package is `hadith`.**
+  `@PACKAGE@` expands to the latter, so it is right for the asset filename and
+  wrong for the URL path. uscan's directory-name check was tested against a
+  checkout named `fortune-hadith` and does not object, so no
+  `--check-dirname-level` is needed.
 
 ## Conventions
 

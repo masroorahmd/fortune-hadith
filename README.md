@@ -19,7 +19,20 @@ the code, is what drives most of the decisions here.
 
 ## Install
 
-Not yet in any archive. Build it yourself:
+Not yet in any archive. The releases here carry a built `.deb`:
+
+```console
+$ gpg --import debian/upstream/signing-key.asc
+$ gpg --verify SHA256SUMS.asc SHA256SUMS && sha256sum -c SHA256SUMS
+$ sudo dpkg -i fortunes-hadith_*.deb hadith_*.deb
+```
+
+That is a one-time install and not an apt repository, so it will not update
+itself. Nothing here is signed in a way `dpkg` checks — Debian does not use
+embedded package signatures, and `/etc/dpkg/dpkg.cfg` ships `no-debsig` — so
+the signature to check is the one over `SHA256SUMS`, by hand, as above.
+
+Or build it yourself:
 
 ```console
 $ sudo apt install debhelper fortune-mod python3
