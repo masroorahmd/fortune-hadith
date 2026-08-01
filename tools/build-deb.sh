@@ -46,7 +46,19 @@ tar -C "$stage" \
 cp -a "$here/debian" "$stage/$pkg-$ver/debian"
 
 cd "$stage/$pkg-$ver"
-dpkg-buildpackage -us -uc "$@"
+
+# Unsigned and full by default, which is what a local check wants.
+#
+# SIGNED_SOURCE=1 instead builds a source-only package and signs it, which is
+# what mentors.debian.net requires -- its dput target sets
+# allow_unsigned_uploads = 0, and it wants the source, not our binaries.
+# dpkg-buildpackage picks the key by the address in debian/changelog, so that
+# address and the key's uid have to agree.
+if [ "${SIGNED_SOURCE:-0}" = "1" ]; then
+	dpkg-buildpackage -S -sa "$@"
+else
+	dpkg-buildpackage -us -uc "$@"
+fi
 
 echo
 echo "built in $stage:"
