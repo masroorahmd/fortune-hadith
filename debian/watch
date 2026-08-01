@@ -15,9 +15,21 @@
 # The tag is the upstream version and carries no Debian revision: v0.1.0, not
 # v0.1.0-1. uscan tracks upstream, and -1 is packaging.
 #
+# The source is the API and not https://github.com/.../releases, which does not
+# work and fails silently in the way that matters: that page carries no asset
+# link at all. GitHub fetches the list afterwards from
+# /releases/expanded_assets/<tag>, so uscan sees HTML with nothing in it to
+# match and reports "no matching hrefs" -- which reads like a wrong pattern and
+# is not. Verified by grepping both URLs; the first has zero download links and
+# the second has all six.
+#
+# searchmode=plain because the API answers JSON: uscan then matches the pattern
+# against the whole body rather than looking for hrefs, and browser_download_url
+# is a plain string in there.
+#
 # Check with:  uscan --no-download --verbose
 version=4
 
-opts="pgpmode=auto" \
-  https://github.com/masroorahmd/fortune-hadith/releases \
-  (?:.*/)?@PACKAGE@@ANY_VERSION@@ARCHIVE_EXT@
+opts="searchmode=plain,pgpmode=auto" \
+  https://api.github.com/repos/masroorahmd/fortune-hadith/releases \
+  https://github.com/masroorahmd/fortune-hadith/releases/download/v[\d.]+/@PACKAGE@@ANY_VERSION@@ARCHIVE_EXT@
