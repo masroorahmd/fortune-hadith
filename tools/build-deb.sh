@@ -36,11 +36,21 @@ tar -C "$here" -cf - \
 	--exclude='*.pyc' \
 	. | tar -C "$stage/$pkg-$ver" -xf -
 
-# Reproducible tarball: sorted names, no owner or timestamp variation.
+# Reproducible tarball: sorted names, no owner, timestamp or permission
+# variation.
+#
+# --mode is not decoration. git versions only the executable bit, so every
+# other permission bit comes from the local umask, and the tarball then depends
+# on which machine unpacked the tree. That is not hypothetical: LICENSE sat at
+# 644 in the working tree while everything around it was 664, so the first
+# published tarball and a rebuild from its own tag differed -- same content,
+# different modes. Without this the tarball cannot be reproduced from the tag,
+# which is the one property the whole release arrangement rests on.
 tar -C "$stage" \
 	--sort=name \
 	--mtime="@$(dpkg-parsechangelog -l "$here/debian/changelog" -S Timestamp)" \
 	--owner=0 --group=0 --numeric-owner \
+	--mode='go=rX,u+rw,a-s' \
 	-czf "$stage/${pkg}_${ver}.orig.tar.gz" "$pkg-$ver"
 
 # The upstream signature.
@@ -56,6 +66,30 @@ tar -C "$stage" \
 #
 # The key is selected by the address in debian/changelog, the same rule
 # dpkg-buildpackage uses, so there is one place that decides which key signs.
+# An upload has to carry the orig tarball that was published, byte for byte,
+# or the sponsor's uscan finds a checksum that does not match the .dsc.
+#
+# The trap is that this diverges silently and for innocent reasons: anything
+# outside debian/ goes into the tarball, so a later README or CLAUDE.md commit
+# is enough. It happened within an hour of the first release.
+#
+# Only files outside debian/ are compared, because that is exactly what the
+# tarball holds -- a Debian-only change (0.1.0-2) legitimately reuses the
+# published tarball and must not be blocked here.
+if [ "${SIGNED_SOURCE:-0}" = "1" ] &&
+	git -C "$here" rev-parse -q --verify "refs/tags/v$ver" >/dev/null; then
+	if ! git -C "$here" diff --quiet "v$ver" -- . ':(exclude)debian'; then
+		echo "error: the tree differs from tag v$ver outside debian/:" >&2
+		git -C "$here" diff --stat "v$ver" -- . ':(exclude)debian' >&2
+		echo >&2
+		echo "  The upload would carry a different orig tarball than the one" >&2
+		echo "  published at v$ver, and uscan would report the mismatch." >&2
+		echo "  Build the upload from the tag (git worktree add ... v$ver)," >&2
+		echo "  or cut a new upstream version." >&2
+		exit 1
+	fi
+fi
+
 if [ "${SIGN_ORIG:-${SIGNED_SOURCE:-0}}" = "1" ]; then
 	signer=$(dpkg-parsechangelog -l "$here/debian/changelog" -S Maintainer |
 		sed 's/.*<\(.*\)>.*/\1/')

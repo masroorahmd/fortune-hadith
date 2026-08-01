@@ -888,6 +888,27 @@ looked right in the log. Only running uscan against a real release found it,
 which is why the CI step asserts the downloaded `.asc` rather than trusting the
 exit code.
 
+**The orig tarball was not reproducible, and the check could not see it.** A
+rebuild from v0.1.0's own tag differed from the published asset in exactly one
+thing: `LICENSE` was mode 644 in the working tree and 664 in a fresh checkout.
+git versions only the executable bit, so every other permission comes from the
+local umask and the tarball depended on which machine unpacked the tree — which
+destroys the one property this whole arrangement rests on. `tar --mode` now
+normalises them, and two builds under umask 022 and 002 are bit-identical.
+
+The failure that matters is the second-order one: `diff -r` compares bytes and
+not permissions, so the `verify-release` step passed a tarball that was wrong.
+It now diffs the `tar -tv` listing as well. **A reproducibility check that only
+looks at content is not a reproducibility check** — and this one was written in
+the same hour as the guarantee it was supposed to enforce.
+
+The other way the tarball drifts is more mundane and is guarded in
+`build-deb.sh`: everything outside `debian/` goes into it, so any later README
+or CLAUDE.md commit gives an upload a different orig tarball than the published
+one. `SIGNED_SOURCE=1` refuses when the tree differs from the tag outside
+`debian/`, and only outside `debian/` — a Debian-only revision legitimately
+reuses the published tarball.
+
 Two things that will bite whoever touches this next:
 
 - **The tag carries the upstream version, not the Debian revision** — `v0.1.0`,

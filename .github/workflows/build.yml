@@ -146,13 +146,21 @@ jobs:
 
       # Compared unpacked rather than byte for byte. The tar stream is
       # deterministic -- sorted names, the changelog timestamp, numeric owner
-      # zero -- but the gzip that wraps it is not guaranteed to emit identical
-      # bytes across versions, and a mismatch there would be a false alarm
-      # about the thing that actually matters, which is the content.
+      # zero, normalised modes -- but the gzip that wraps it is not guaranteed
+      # to emit identical bytes across versions, and a mismatch there would be
+      # a false alarm about the thing that actually matters.
+      #
+      # The listing is compared as well as the content, and that is not
+      # belt-and-braces. `diff -r` sees bytes and not permissions, and the very
+      # first release differed from a rebuild of its own tag in nothing but the
+      # mode of LICENSE -- which this step, as originally written, passed.
       - name: Published tarball is what the tag contains
         run: |
           ./tools/build-deb.sh "$RUNNER_TEMP/ours" >/dev/null
           mkdir -p "$RUNNER_TEMP/a" "$RUNNER_TEMP/b"
+          tar -tvf "$RUNNER_TEMP"/rel/hadith-*.tar.gz       > "$RUNNER_TEMP/a.list"
+          tar -tvf "$RUNNER_TEMP"/ours/hadith_*.orig.tar.gz > "$RUNNER_TEMP/b.list"
+          diff "$RUNNER_TEMP/a.list" "$RUNNER_TEMP/b.list"
           tar -C "$RUNNER_TEMP/a" -xf "$RUNNER_TEMP"/rel/hadith-*.tar.gz
           tar -C "$RUNNER_TEMP/b" -xf "$RUNNER_TEMP"/ours/hadith_*.orig.tar.gz
           diff -r "$RUNNER_TEMP/a" "$RUNNER_TEMP/b"
