@@ -871,6 +871,23 @@ does, with no private key —
 lintian on an Ubuntu runner knows only 2, 3 and 4 and would report the file as
 an unknown standard.
 
+**The releases page has no assets in it.** The first watch file pointed at
+`https://github.com/…/releases` and matched hrefs, which is the shape every
+GitHub watch-file example uses, and it found nothing. uscan says *"no matching
+hrefs"*, which reads as a wrong pattern and is not: that page carries no asset
+link at all, because GitHub fetches the list afterwards from
+`/releases/expanded_assets/<tag>`. Grepping both settles it — zero download
+links in the first, all six in the second — so no href pattern over `/releases`
+can ever match, however it is written. The source is therefore
+`api.github.com/repos/…/releases` with `searchmode=plain`, which matches
+against the whole JSON body instead of hunting for hrefs.
+
+That one is the argument for the `verify-release` job existing at all. The
+watch file parsed, `uscan --no-download` exited 0, and the expanded pattern
+looked right in the log. Only running uscan against a real release found it,
+which is why the CI step asserts the downloaded `.asc` rather than trusting the
+exit code.
+
 Two things that will bite whoever touches this next:
 
 - **The tag carries the upstream version, not the Debian revision** — `v0.1.0`,
