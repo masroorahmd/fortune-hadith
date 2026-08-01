@@ -39,7 +39,7 @@ jobs:
         run: |
           lintian --version
           lintian --profile debian --pedantic --fail-on error,warning \
-            --suppress-tags initial-upload-closes-no-bugs,newer-standards-version \
+            --suppress-tags newer-standards-version \
             "$RUNNER_TEMP"/hadith-build/hadith_*_amd64.changes
 
       # Installed separately and in this order, so that a data package which

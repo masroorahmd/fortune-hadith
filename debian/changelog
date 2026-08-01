@@ -1,9 +1,11 @@
 hadith (0.1.0-1) unstable; urgency=medium
 
-  * Initial release.
+  * Initial release. (Closes: #1143254)
     - "The Sayings of Muhammad" (Suhrawardy, 1905), 443 sayings, public
       domain, parsed and proofread against the archive.org scan.
     - Ships two cookie files: the modernised English as the default, and
       the 1905 wording unaltered beside it.
+    - Split into hadith (the command) and fortunes-hadith (the data), as
+      bible-kjv splits from bible-kjv-text.
 
  -- Masroor Ahmad <debian@masroor.de>  Sat, 01 Aug 2026 16:26:46 +0200
