@@ -107,6 +107,18 @@ gh auth status >/dev/null 2>&1 || { echo "error: gh not authenticated" >&2; exit
 git tag -s "$tag" -m "$pkg $ver"
 git push origin "$tag"
 
+# git push returns before the API can see the ref, and --verify-tag then
+# aborts with "tag doesn't exist in the repo" -- after the tag has already been
+# pushed, which is the awkward half-done state. Wait for it rather than drop
+# --verify-tag, since that flag is what stops a typo in $tag from silently
+# creating a tag off the default branch.
+i=0
+while ! gh api "repos/$repo/git/ref/tags/$tag" >/dev/null 2>&1; do
+	i=$((i + 1))
+	[ "$i" -gt 12 ] && { echo "error: $tag not visible to the API" >&2; exit 1; }
+	sleep 5
+done
+
 # Draft first, then publish, so that the release:published event the CI
 # verification job listens for cannot fire before the assets are attached.
 gh release create "$tag" --draft --verify-tag \
