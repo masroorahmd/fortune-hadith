@@ -1,0 +1,40 @@
+# Sayings the OCR lost, transcribed from the page scans by hand.
+#
+# The djvu OCR destroyed the entry number on each of these, so the parser had
+# nothing to key on and the saying vanished with it: "21." came through as
+# "a1.", "51." as "Ji.", "52." as "$2.", "101." as "tor.". Where the number
+# went, so did the text.
+#
+# Each was read off the page image at
+#   archive.org/details/the-sayings-of-muhammad_202401
+# The scan page is given for checking; it runs 3 ahead of the printed folio.
+#
+# Transliteration follows corrections.tsv and uses the acute accent, so Mu'áz
+# rather than the printed Mu'āz.
+#
+# Format: n<TAB>scan page<TAB>topic<TAB>text
+5	53	Abstinence	The nearest to me are the abstinent, whoever they are, wherever they are.
+21	56	Alms-Giving	The best of almsgiving is that which springeth from the heart, and is uttered by the lips to soften the wounds of the injured.
+22	56	Alms-Giving	Almsgiving is a duty unto you. Alms should be taken from the rich and returned to the poor.
+50	62	Charity	Whoso hath left debt and children, let them come to me; I am their patron, I will discharge his debt and befriend his children.
+51	62	Charity	Every good act is charity.
+52	62	Charity	Doing justice between two people is charity; and assisting a man upon his beast, and lifting his baggage, is charity; and pure, comforting words are charity; and answering a questioner with mildness, is charity; and removing that which is an inconvenience to wayfarers, such as thorns and stones, is charity.
+53	62	Charity	Every good act is charity; and verily it is a good act to meet your brother with an open countenance, and to pour water from your own water-bag into his vessel.
+58	63	Christians And Jews	When the bier of anyone passeth by thee, whether Jew, Christian or Muslim, rise to thy feet.
+59	63	Cleanliness	Were it not for fear of troubling my disciples, verily I would order them to clean their teeth before every prayer.
+72	66	Contentment	God loveth those who are content.
+81	67	Control Of Self	Mu'áz said, "At the time of my being despatched to the judgeship of Yemen, the last advice Muhammad gave me was this, 'O Mu'áz! be of good temper towards people.'"
+89	68	Courtesy	Respect people according to their eminence.
+91	68	Courtesy	Abuse nobody, and if a man abuse thee, and lay open a vice which he knoweth in thee; then do not disclose one which thou knowest in him.
+101	69	The Dead	Do not speak ill of the dead.
+105	70	Death	Not one of you must wish for death, from any worldly affliction; but if there certainly is anyone wishing for death, he must say, "O Lord, keep me alive so long as life may be good for me, and cause me to die when it is better for me so to do."
+125	72	Divorce	Every woman who asketh to be divorced from her husband without cause, the fragrance of the Garden is forbidden her.
+135	74	The Duty Of Believers	Do not associate any one thing with God, although they kill or burn you; nor affront intentionally your parents, although they should order you to quit your wife, your children, and your property. Do not drink wine; for it is the root of all evil; abstain from vice; and when a pestilence shall pervade mankind, and you shall be amongst them, remain with them; and cherish your children.
+155	77	The Duty Of Believers	Be ye imbued with divine qualities.
+211	86	God's Kindness	If the unbeliever knew of the extent of the Lord's mercy, even he would not despair of Paradise.
+251	92	Kindness	All God's creatures are His family; and he is the most beloved of God who doeth most good to God's creatures.
+337	106	Parents	He who wisheth to enter Paradise at the best door must please his father and mother.
+350	107	Poverty	A man came to Muhammad and said, "Verily I love you." He replied, "Look to what you say." And the man said, "By God! I love you," and repeated the same twice. Lord Muhammad said, "If you are sincere, then prepare yourself for poverty: for poverty reacheth him who loveth me quicker than a torrent reacheth the sea."
+394	115	The Sick	Whoever visiteth a sick person, an angel calleth from heaven, "Be happy in the world, and happy be your walking, and take you a habitation in Paradise."
+401	117	Truth	No man is true in the truest sense of the word but he who is true in word, in deed, and in thought.
+406	117	Understanding	It is not a sixth or a tenth of a man's devotion which is acceptable to God, but only such portions thereof as he offereth with understanding and true devotional spirit.

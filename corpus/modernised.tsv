@@ -1,0 +1,103 @@
+# Entries whose syntax the rules engine cannot reach, rewritten by hand.
+#
+# tools/modernise.py --engine rules gets the morphology — the -eth verbs, thou
+# and thy, verily, unto — and that is 236 of the 443 entries finished outright.
+# What it leaves behind is syntax: negative imperatives ("Kill not"), "that
+# which", the inversions, and a handful of places where a word-level swap makes
+# the sentence worse than it was ("Solve Thou my difficulties" -> "Solve You my
+# difficulties"). Those 74 entries are listed by `--engine rules --report`, and
+# this file is where the ones needing a real rewrite are answered.
+#
+# The rule for what goes in here is the rule for the whole exercise: register
+# only. Nothing may be added, dropped, softened or glossed, and every proper
+# name, number and quotation mark stays. tools/modernise_check.py enforces that
+# mechanically; it is not a matter of trusting whoever wrote the line.
+#
+# Entries in the residue list that are NOT here are ones the rules engine had
+# already finished — the residue patterns are deliberately generous, so about
+# half of what they flag turns out to need nothing.
+#
+# A rewrite must never be the thing that hides a defect. Eleven entries were
+# held out of this file while the OCR still had them damaged; they are repaired
+# now in corpus/artefacts.tsv, against the page images, and five of them have
+# since been rewritten here. See the note at the foot.
+#
+# Format: number<TAB>text   A leading P addresses the preamble series, as in
+# proofed.tsv.
+
+P2	The proof of a Muslim's sincerity is that he pays no attention to what is not his business.
+P3	No one is a true believer until he wants for his brother what he wants for himself.
+P4	What is lawful is clear, and what is unlawful is clear too, but between the two are doubtful things that it is best to keep away from.
+2	Do not kill your hearts with too much eating and drinking.
+9	Do not torment yourselves, in case God should punish you.
+20	The best alms are those the right hand gives and the left hand does not know about.
+21	The best giving is what comes from the heart, and what the lips say to soften the wounds of the injured.
+23	There are seven people whom God will draw under His own shadow, on the day when there will be no other shadow; one of them a man who has given alms and concealed it, so that his left hand did not know what his right hand did.
+27	The best alms are those of a man of small means, earned by his own labour, out of which he gives as much as he can.
+49	When you speak, speak the truth; keep your promises; discharge your trust; do not commit fornication; be chaste; have no impure desires; hold your hands back from striking, and from taking what is unlawful and bad. The best of God's servants are those who, when you see them, remind you of God; and the worst of God's servants are those who carry tales about, to do mischief and separate friends, and look for the faults of the good.
+52	Doing justice between two people is charity; helping a man onto his mount, and lifting his baggage, is charity; kind, comforting words are charity; answering a questioner gently is charity; and clearing what is in a traveller's way, such as thorns and stones, is charity.
+53	Every good act is charity; and it is truly a good act to meet your brother with a cheerful face, and to pour water from your own water-bag into his vessel.
+57	Do not praise me beyond bounds, as the Christians did in praising Jesus, the son of Mary, by calling Him God, and the Son of God; I am only the Lord's servant; so call me the servant of God, and His messenger.
+67	A man asked Muhammad what the mark was by which he might know the reality of his faith. Muhammad said: "If you take pleasure in the good you have done and are grieved by the evil you have committed, you are a true believer." The man said: "What does a fault really consist of?" Muhammad said: "When anything pricks your conscience, leave it."
+98	Whoever brings dead land to life, that is, cultivates waste land, has his reward in it.
+103	Let none of you wish for death; not the doer of good works, for he may yet add to them by a longer life; nor the offender, for he may yet obtain God's forgiveness by repentance. Do not wish for death, or pray for it, before its time comes; for when you die your hope is at an end, and so is the chance of reward: and truly, a longer life for a Mu'min (Muslim) increases his good works.
+128	God has made a straight road, with two walls, one on each side of it, in which are open doors with curtains drawn across. At the top of the road is an Admonisher, who says, "Go straight on the road, and not crooked"; and above this Admonisher is another, who says to anyone who would pass through these doorways, "Do not pass through those doors, or truly you will fall." Now, the road is Islám; and the open doors are the things God has forbidden; and the curtains before the doors are the bounds God has set; the Admonisher is the Kur'án, and the upper Admonisher God, in the heart of every Mu'min (Muslim).
+129	You are given the divine commandments, so do not abandon them; you are forbidden what is unlawful, so do not fall into it; there are fixed boundaries, so do not go beyond them; and there is silence on some things without their being forgotten, so do not argue about them.
+135	Do not associate anything with God, even if they kill or burn you; and do not deliberately affront your parents, even if they order you to leave your wife, your children and your property. Do not drink wine, for it is the root of all evil; keep away from vice; and when a pestilence spreads through people, and you are among them, stay with them; and cherish your children.
+140	When you speak, speak the truth; keep your promises; discharge your trust; do not commit fornication; be chaste; have no impure desires; hold your hands back from striking, and from taking what is unlawful or evil. The best of God's servants are those who, when you see them, remind you of God; and the worst of God's servants are those who carry tales about, to do mischief and separate friends, and look for the faults of the good.
+144	It is not a sixth or a tenth of a man's devotion that God accepts, but only those parts of it he offers with understanding and a true devotional spirit.
+154	What is lawful is clear, and what is unlawful is clear too, but between the two are doubtful things that it is best to keep away from.
+162	The proof of a Muslim's sincerity is that he pays no attention to what is not his business.
+163	The Faithful are those who keep their trust, do not go back on their word, and hold to their pledge.
+164	No one is a true believer until he wants for his brother what he wants for himself.
+171	Do not fear the abuse of the detractor in making God's religion known.
+6	A keeper of the fast who does not give up lying and slander — God does not care about his going without food and drink (that is, God does not accept his fasting).
+142	Whoever believes in one God and the life beyond (that is, a Muslim) must not injure his neighbours.
+146	Worship God as you would if you saw Him; for even if you do not see Him, He sees you.
+180	O you who have embraced Islám with the tongue, and to whose hearts it has not reached: do not distress Muslims, or speak ill of them, or look for their faults.
+267	He who gives life to learning does not die.
+353	He whom prayer does not keep from wrongdoing and evil gains nothing but distance from the Lord.
+373	The best of you, before God and His creation, are those who are best to their own families, and I am the best to my family. When your friend dies, do not mention his faults.
+413	Do you beat your own wife as you would a slave? That you must not do.
+173	Guard yourselves from six things, and I am your surety for Paradise. When you speak, speak the truth; keep your promises; discharge your trust; be chaste in thought and action; and hold your hand back from striking, and from taking what is unlawful and bad.
+209	Muhammad said, "I would not have the whole wealth of the world in the place of this revelation.": — "Say: (O Muhammad!) O My servants who have oppressed your own souls by sinning, do not despair of the mercy of God." A man said, "What of him who has associated others with God?" Muhammad remained silent for a while and then said, "Know that God forgives him also; but on repentance."
+175	He is not one of us who is not affectionate to his little ones, and does not respect the feelings of the aged; and he is not one of us who does not enjoin what is good and forbid what is evil.
+177	No one has believed perfectly until he wants for his brother what he wants for himself.
+181	Do not say that if people do good to us we will do good to them, and if people wrong us we will wrong them; but resolve that if people do you good you will do good to them, and if they wrong you, you will not wrong them.
+182	"Teach me something to do such that when I do it God and people will love me." Muhammad said: "Do not desire the world, and God will love you; and do not desire what other people have, and they will love you."
+183	In prayer, every thought is to be laid aside but the thought of God; in conversation, say nothing you will later regret; do not covet what others have, or set your hopes on them.
+185	My Lord has commanded me nine things: (1) To revere Him, outwardly and inwardly; (2) to speak the truth, and fittingly, in prosperity and in adversity; (3) moderation in wealth and in poverty; (4) to be good to my relations and kindred, who are not good to me; (5) to give alms to whoever refuses me; (6) to forgive whoever injures me; (7) that my silence should be spent in gaining knowledge of God; (8) that when I speak, I should mention Him; (9) that when I look on God's creatures, it should be as an example to them: and God has ordered me to direct people in what is lawful.
+195	Do not say that if people do good to us we will do good to them, and if people wrong us we will wrong them; but resolve that if people do you good you will do good to them, and if they wrong you, you will not wrong them.
+202	God says, "Whoever does one good act has ten rewards, and I give more to whomever I choose; and whoever does an ill, its punishment is equal to it, or I forgive him; and whoever seeks to approach Me by a span, I seek to approach him by a cubit; and whoever seeks to approach Me by a cubit, I seek to approach him by two fathoms; and whoever walks towards Me, I run towards him; and whoever comes before Me with the earth full of sins, and believes in Me alone, him I come before with a front of forgiveness as big as the earth."
+206	We were with Muhammad on a journey, and some men stood up repeating aloud, "God is most great," and the Rasúl said, "O men! Go easy on yourselves, and do not strain yourselves by raising your voices; truly you are not calling to one who is deaf or absent, but to one who hears and sees; and He is with you; and He to whom you pray is nearer to you than the neck of your camel."
+320	Kais b. S'al said: "I came to Hirah, and saw the inhabitants worshipping their chief; and I said, 'Truly the Apostle of God is worthy of being worshipped.' Then I came to the Apostle and said, 'I saw the people of Hirah worshipping the chief of their tribe, and you are most worthy of being worshipped.' Then Muhammad said to me, 'Tell me, if you should pass by my grave, would you worship it?' I said, 'No.' And he said, 'Do not worship me.'"
+397	Truly God will say on the Day of Judgement, "O children of Adam! I was sick and you did not visit Me." And the sons of Adam will say, "O our defender, how could we visit You? For You are the Lord of the Universe, and are free from sickness." And God will say, "O men! such a one was sick and you did not visit him." And God will say, "O children of Adam, I asked you for food, and you did not give it to Me?" And the children of Adam will say, "O our patron, how could we give You food, seeing You are the cherisher of the Universe, and are free from hunger and eating?" And God will say, "Such a one asked you for bread and you did not give it to him."
+416	Muhammad said: "Do not beat your wives." Then Omar came to the Rasúl (Muhammad) and said, "Wives have got the upper hand of their husbands from hearing this."
+225	Deal gently with people, and do not be harsh; cheer them, and do not condemn them. You will meet many 'people of the book' who will ask you what the key to heaven is. Answer them that the key to heaven is to testify to the truth of God, and to do good work.
+278	Whoever seeks knowledge and finds it will get two rewards: one the reward for wanting it, the other for attaining it; so even if he does not attain it, he still has the one reward.
+329	O Lord! I bring You my complaint, of my weakness and the vanity of my efforts. I count for nothing in the sight of men, O Most Merciful! Lord of the weak! You are my Lord! Do not forsake me. Do not leave me a prey to strangers, or to my enemies. If You are not displeased, I am safe. I take refuge in the light of Your countenance, by which all darkness is dispelled, and by which peace comes in the Here and the Hereafter. Solve my difficulties as it pleases You. There is no power and no strength except in You.
+340	Shall I tell you of something better than fasting, alms and prayers? Making peace between people; for enmity and malice tear up heavenly rewards by the roots.
+361	Every human being has two inclinations — one urging him to good and driving him towards it, and the other urging him to evil and driving him towards that; but God's help is near, and whoever asks God's help in struggling against the evil promptings of his own heart receives it.
+362	The best of good acts in God's sight is the one kept up steadily, even if it is small.
+367	Truly, of the things I fear for you after I have left the world, this is one: that the ornaments and goods of the world may please you. Then a man said, "O Messenger of God! Does good bring harm?" Lord Muhammad said, "Truly good does not bring harm: I mean that if there is much wealth, it is a blessing, and there is no harm in it, except from stinginess and extravagance; it is like the spring, which makes nothing grow but what is good: harm and destruction come from misusing it."
+369	Truly the reward is as great as the misfortune; that is, the more unfortunate and stricken a man is, the greater and more complete his reward. And truly, when God loves a people, He entangles them in misfortune; so whoever accepts God's will in misfortune has God's favour.
+406	It is not a sixth or a tenth of a man's devotion that God accepts, but only those parts of it he offers with understanding and a true devotional spirit.
+424	Asma, daughter of Yazid, said, "Victuals were brought to Muhammad, and he put them before some of us women who were present, and said, 'Eat.' But although we were hungry we said, 'We have no appetite.' Muhammad said, 'O women! Do not mix hunger with lies.'"
+439	Cursed is this world and cursed is everything in it, except the remembrance of God and what helps towards it.
+
+24	Muhammad said, "It is indispensable for every Muslim to give alms." The companions asked, "But what if he has nothing to give?" He said, "If he has nothing, he must work with his hands, so as to gain something and benefit himself; and give alms out of what is left." They said, "But what if he is not able to do that work, to benefit himself and give alms to others?" The Rasúl (Muhammad) said, "Then he should help the needy and the oppressed." They asked, "What if he is not able to help the oppressed?" He said, "Then he should urge people to do good." They asked, "And if he cannot?" He said, "Then let him hold himself back from doing harm to people; for that too is alms and charity for him."
+47	Prayers lighten the heart, and charity is a proof of Imán (Faith), and abstinence from sin is perfect splendour; the Kur'án is a proof of gain to you if you do good, and a detriment to you if you do wrong; and every man who rises in the morning either does what will be the means of his redemption or of his ruin.
+204	God says, "O man! Only follow My laws, and you will become like Me, and then say, 'Be' and behold, It is."
+389	To those of your servants who please you, give to eat what you eat yourself, and clothe them as you clothe yourself; but those who do not please you, part with them; and do not punish God's creatures.
+395	Whoever visits a sick person always enters and swims in a sea of mercy until he sits down; and when he sits, he is drowned in it.
+
+# --- the OCR-damaged entries, now repaired --------------------------------
+# An earlier version of this file held eleven entries back because the OCR had
+# damaged them and a rewrite would have baked the damage in. All eleven are now
+# repaired in corpus/artefacts.tsv against the page images, so the reason is
+# gone. Five of them needed a rewrite and are above (24, 47, 204, 389, 395);
+# the other six — 4, 26, 28, 100, 318, 414 — the rules engine finishes on its
+# own.
+#
+# The principle stands even though the list is empty: a rewrite must never be
+# the thing that hides a defect. Repair first, modernise second.

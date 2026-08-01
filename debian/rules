@@ -1,0 +1,59 @@
+#!/usr/bin/make -f
+
+# The cookie files are built here from corpus/*.jsonl rather than shipped
+# ready-made, so that what is in the package is what the pipeline produces.
+# make_fortune.py is stdlib-only and needs no network.
+
+# The corpus is UTF-8 and make_fortune.py reads and writes it as such
+# explicitly, but the eulogy substitution and textwrap still run under the
+# build locale. Pin it so a buildd with LANG unset gets the same file.
+export LC_ALL = C.UTF-8
+
+# Two binary packages out of this one source, the way bible-kjv splits from
+# bible-kjv-text: the command in one, the text in the other. fortunes-hadith
+# is then a plain data package like every other fortunes-* in the archive,
+# and installing it alone is enough for fortune(6) to find the sayings.
+FORTUNEDIR = /usr/share/games/fortunes
+CMDDIR     = debian/hadith
+DATADIR    = debian/fortunes-hadith
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	python3 tools/make_fortune.py \
+	    --src corpus/suhrawardy-modern.jsonl --field modern \
+	    --out fortune/hadith-suhrawardy
+	python3 tools/make_fortune.py \
+	    --src corpus/suhrawardy-1905.jsonl --field text \
+	    --out fortune/hadith-suhrawardy-1905
+
+override_dh_auto_install:
+	install -d $(DATADIR)$(FORTUNEDIR)
+	install -m 644 fortune/hadith-suhrawardy \
+	               fortune/hadith-suhrawardy-1905 \
+	               $(DATADIR)$(FORTUNEDIR)
+# strfile writes its offsets through htonl, so the .dat is big-endian
+# whatever built it and the package stays Architecture: all. Not -s: the
+# summary it prints puts the entry count in the build log, which is the one
+# place a wrong or truncated corpus would show up on its own.
+	cd $(DATADIR)$(FORTUNEDIR) && \
+	    strfile hadith-suhrawardy && \
+	    strfile hadith-suhrawardy-1905
+# Every cookie-file package in the archive ships this symlink. fortune 1.99
+# resolves UTF-8 content without it, but the convention costs nothing and a
+# future fortune that looks for the .u8 first would find it.
+	cd $(DATADIR)$(FORTUNEDIR) && \
+	    ln -sf hadith-suhrawardy hadith-suhrawardy.u8 && \
+	    ln -sf hadith-suhrawardy-1905 hadith-suhrawardy-1905.u8
+	install -D -m 755 bin/hadith $(CMDDIR)/usr/games/hadith
+
+# Nothing to run: the only executable is a wrapper around fortune, and the
+# cookie files are checked by dh_auto_test's absence rather than pretending.
+override_dh_auto_test:
+	test -s fortune/hadith-suhrawardy
+	test -s fortune/hadith-suhrawardy-1905
+
+override_dh_auto_clean:
+	rm -f fortune/hadith-suhrawardy fortune/hadith-suhrawardy-1905
+	rm -rf tools/__pycache__

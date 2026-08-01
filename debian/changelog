@@ -1,0 +1,9 @@
+hadith (0.1.0-1) unstable; urgency=medium
+
+  * Initial release.
+    - "The Sayings of Muhammad" (Suhrawardy, 1905), 443 sayings, public
+      domain, parsed and proofread against the archive.org scan.
+    - Ships two cookie files: the modernised English as the default, and
+      the 1905 wording unaltered beside it.
+
+ -- Masroor Ahmad <debian@masroor.de>  Sat, 01 Aug 2026 16:26:46 +0200

@@ -1,0 +1,21 @@
+hadith for Debian
+-----------------
+
+The cookie files are built at package build time from corpus/*.jsonl by
+tools/make_fortune.py, and are not shipped ready-made in the source. Running
+the pipeline (parse -> qa -> modernise -> make_fortune) is what produces those
+JSONL files in the first place; the package build only renders them.
+
+Both corpora are installed as ordinary fortune cookie files:
+
+    /usr/share/games/fortunes/hadith-suhrawardy        the modernised text
+    /usr/share/games/fortunes/hadith-suhrawardy-1905   the 1905 wording
+
+so `fortune` on its own will draw from them along with every other installed
+cookie file. The `hadith` command exists to draw from these two alone, and to
+make the modernised text the default.
+
+The (saw) after the Prophet's name is added when the cookie files are
+rendered, not in either corpus. See hadith(6), NOTES.
+
+ -- Masroor Ahmad <debian@masroor.de>, Sat, 01 Aug 2026 16:26:46 +0200

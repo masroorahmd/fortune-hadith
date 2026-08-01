@@ -1,0 +1,67 @@
+# Entries transcribed whole from the page scans, replacing what the OCR made
+# of them.
+#
+# These are not word-level damage — no substitution table reaches them. In each
+# the OCR merged foreign material into the saying: a footnote, a running head,
+# a page number, or the neighbouring entry. Several are also cut short where a
+# page break fell inside them, so the text had to be assembled from two pages.
+#
+# Read off the page images at
+#   archive.org/details/the-sayings-of-muhammad_202401
+# after tools/abbyy_diff.py showed the two OCR passes disagreeing. The page
+# given is where the entry starts; it runs 3 ahead of the printed folio.
+#
+# Where the two passes disagreed the image decided, and it did not always side
+# with the cleaner-looking pass: 318 is "her to", not ABBYY's "hereto".
+#
+# Format: n<TAB>scan page<TAB>topic<TAB>text
+20	55	Alms-Giving	The best of alms is that which the right hand giveth, and the left hand knoweth not of.
+34	58	Animals And Duties Owed Thereto	Verily God hath one hundred loving kindnesses; one of which He hath sent down amongst man, quadrupeds and every moving thing upon the face of the earth: by it they are kind to each other, and forgive one another; and by it the animals of the wilds are kind to their young; and God hath reserved ninety-nine loving kindnesses, by which He will be gracious to His creatures on the last day.
+56	62	Christians And Jews	Muhammad once referred to strife, and said, "It will appear at the time of knowledge leaving the world." Ziad said, "O Messenger of God, how will knowledge go from the world, since we read the Kur'án, and teach it to our children, and our children to theirs; and so on till the last day?" Then Muhammad said, "O Ziád, I supposed you the most learned man of Medinah. Do the Jews and Christians who read the Bible and the Evangel act on them?"
+61	63	Compassion	When the child (of Zainab) was brought to Muhammad, dying; its body trembling and moving; the eyes of the Apostle of God shed many tears. And S'ad said, "O Messenger of God! What is this weeping and shedding of tears?" Muhammad replied, "This is an expression of the tenderness and compassion, which the Lord hath put into the hearts of His servants; the Lord doth not have compassion on and commiserate with His servants, except such as are tender and full of feeling."
+87	67	Courtesy	No father hath given his child anything better than good manners.
+90	68	Courtesy	Being confined for room, the Apostle of God sat down upon his legs drawn up under his thighs. A desert Arab who was present said, "What is this way of sitting?" Muhammad said, "Verily God hath made me a humble servant, and not a proud king."
+140	75	The Duty Of Believers	When you speak, speak the truth; perform when you promise; discharge your trust; commit not fornication; be chaste; have no impure desires; withhold your hands from striking, and from taking that which is unlawful or evil. The best of God's servants are those who, when seen, remind of God; and the worst of God's servants are those who carry tales about, to do mischief and separate friends, and seek for the defects of the good.
+209	85	God's Forgiveness	Muhammad said, "I would not have the whole wealth of the world in the place of this revelation.": — "Say: (O Muhammad!) O My servants who have oppressed your own souls by sinning, despair not of the mercy of God." A man said, "What of him who hath associated others with God?" Muhammad remained silent for a while and then said, "Know that him also God forgiveth; but on repentance."
+216	86	God's Kindness	"Do none enter the Garden of Bliss save by God's mercy?" Muhammad said, "No. None enter save through God's favour." "You also, O Messenger of God! Will you not enter Paradise save by God's compassion?" Muhammad put his hand on his head and said thrice, "I also shall not enter unless God cover me with His mercy."
+232	89	Hospitality	Whoever believeth in God and the Hereafter (i.e. a Muslim) must respect his guest: and whoever believeth in God and the Hereafter must not incommode his neighbours; and a Mu'min must speak only good words, otherwise remain silent.
+259	94	The Kur'an	"By what rule", said Muhammad, "would you be guided, O Mu'áz, in your administration of Yemen?" "By the law of the Kur'án." "But if you find no direction in the Kur'án?" "Then I will act according to the example of the Messenger of God." "But if that faileth?" "Then I will exercise my own reason and judgment."
+270	95	Learning	Verily God doth not take away knowledge from the hands of His servants; but taketh it by taking away the learned; so that when no learned men remain, the ignorant will be placed at the head of affairs. Causes will be submitted to their decision, they will pass sentence without knowledge, will err themselves, and lead others into error.
+316	101	Muhammad The Prophet	Verily, my heart is veiled with melancholy and sadness for my followers; and verily I ask pardon of God one hundred times daily.
+326	103	Muhammad The Prophet's Prayers	Muhammad used to say, after making the profession of faith, "O Lord, I supplicate Thee for firmness in faith, and inclination towards the straight path, and for Thine aid in being grateful to Thee, and in adoring Thee in every good way; and I supplicate Thee for an innocent heart which shall not incline to wickedness and for a true tongue. I supplicate Thee to guide me to all which Thou knowest to be virtuous and to preserve me from all which Thou knowest to be vicious. I supplicate Thee to forgive me my faults for Thou knowest them all."
+353	108	Prayer	He whom prayer preventeth not from wrongdoing and evil, increaseth in naught save in remoteness from the Lord.
+381	112	Repentance	A sincere repenter of faults is like him who hath committed none.
+390	114	Servants	He will not enter Paradise who behaveth ill to his slaves. The companions said, "O Apostle of God! Have you not told us, that there will be a great many slaves and orphans amongst your disciples?" He said, "Yes; then be kind to them as to your own children, and give them to eat of what you eat yourselves. The slaves that say their prayers are your brothers."
+71	66	Contentment	Look to those inferior to yourselves, so that you may not hold God's benefits in contempt.
+104	70	Death	Remember often the destroyer and cutter off of delights, which is death.
+199	84	Gentleness	Verily you have two qualities which God and His messenger love, — fortitude and gentleness.
+228	88	Heaven And Hell	The people entitled to the Abode of Bliss are three; the first, a just king, a doer of good to his people endowed with virtue; the second, an affectionate man, of a tender heart to relations and others; the third, a virtuous man.
+244	91	Islam	Every child is born with a disposition towards the natural religion (Islám — submission to the Divine Will). It is the parents who make it a Jew, a Christian or a Magian.
+250	92	Kindness	Who is the most favoured of God? He from whom the greatest good cometh to His creatures.
+349	107	Poverty	Seek for my satisfaction in that of the poor and needy.
+400	117	Truth	He is not of me who, when he speaketh, speaketh falsely; who, when he promiseth, breaketh his promises; and who, when trust is reposed in him, faileth in his trust.
+49	61	Charity	When you speak, speak the truth; perform when you promise; discharge your trust; commit not fornication; be chaste; have no impure desires; withhold your hands from striking, and from taking that which is unlawful and bad. The best of God's servants are those who, when seen, remind of God; and the worst of God's servants are those who carry tales about, to do mischief and separate friends, and seek for the defects of the good.
+57	63	Christians And Jews	Do not exceed bounds in praising me, as the Christians do in praising Jesus, the son of Mary, by calling Him God, and the Son of God; I am only the Lord's servant; then call me the servant of God, and His messenger.
+63	64	Compassion	There is no reward but Paradise for a Muslim who suffereth with patience when the soul of his affectionate friend is taken.
+78	66	Control Of Self	That person is wise and sensible who subdueth his carnal desires and hopeth for rewards from God; and he is an ignorant man who followeth his lustful appetites, and with all this asketh God's forgiveness.
+80	67	Control Of Self	"Give me advice," said someone. Muhammad said, "Be not angry."
+156	77	The Duty Of Believers	He is true who protecteth his brethren both present and absent.
+197	84	Gentleness	Whoever hath been given gentleness hath been given a good portion, in this world and the next.
+203	85	God	God saith, "The person I hold as a beloved, I am his hearing by which he heareth, and I am his sight by which he seeth, and I am his hands by which he holdeth, and I am his feet by which he walketh."
+298	98	Marriage	A woman may be married by four qualifications: one on account of her money; another, on account of the nobility of her pedigree (Shijra); another, on account of her beauty; the fourth, on account of her virtue. Therefore, look out for a woman that hath virtue: but if you do it from any other consideration, your hands be rubbed in dirt.
+312	100	Muhammad The Prophet	I am no more than man; when I order you anything respecting religion, receive it, and when I order you anything about the affairs of the world, then am I nothing more than man.
+315	101	Muhammad The Prophet	'Áishah said, "A party of Jews asked permission to go to Muhammad, and said, 'Death upon you.' And I answered their insult by saying, 'Rather upon you be death and curse.' Then Muhammad said, 'Be mild, O 'Áishah! and make a point of being kind, and withhold thyself from speaking harshly.' I said, 'Did you not hear what they said?' He said, 'Verily, I do always say, "Be the same to you."'"
+317	101	Muhammad The Prophet	Zaid, Muhammad's servant, said, "I served Lord Muhammad ten years, and he never said 'Uff,' to me; and never said, 'Why did you do so?' and never said, 'Why did you not do so?'"
+323	103	Muhammad The Prophet's Mission	Muhammad slept upon a mat, and got up very marked on the body by it: and someone said, "O Messenger of God! if thou hadst ordered me, I would have spread a soft bed for thee." Lord Muhammad said, "What business have I with the world? I am like a man on horseback, who standeth under the shade of a tree, then leaveth it."
+336	106	Parents	(i) Heaven lieth at the feet of Mothers. (ii) God's pleasure is in a father's pleasure; and God's displeasure is in a father's displeasure.
+399	116	Sin	Can any one walk through water without wetting his feet? The companions replied, "No"; Muhammad said, "Such is the condition of those of the world; they are not safe from sins."
+P4	52	-	That which is lawful is clear, and that which is unlawful likewise, but there are certain doubtful things between the two from which it is well to abstain.
+11	54	Abstinence	S'ad b. Abi Waqqás said: "The Apostle forbade 'Uthmán b. Ma'zún from avoiding marriage: and if he had permitted that to him, verily we (the other Muslims) would have become eunuchs."
+130	73	The Duty Of Believers	Happy is the Mu'min (Muslim), for, if good befalleth him, he praiseth and thanketh God; and, if misfortune, praiseth God and beareth it patiently; therefore a Mu'min is rewarded for every good he doth, even for his raising a morsel of food to the mouth of his wife.
+136	75	The Duty Of Believers	There are three roots to Imán (Faith): not to trouble him who shall say 'there is no deity but God'; not to think him an unbeliever on account of one fault; and not to discard him for one crime.
+148	76	The Duty Of Believers	"The duties of Muslims to each other are six." It was asked, "What are they, O Messenger of God?" He said, "When you meet a Muslim, greet him, and when he inviteth you to dinner, accept; and when he asketh you for advice, give it him; and when he sneezeth and saith, 'Praise be to God', do you say, 'May God have mercy upon thee'; and when he is sick, visit him; and when he dieth, follow his bier."
+238	90	Islam	"Inform me in the matter of Islám," said Sufyán, "so that I may have no occasion to ask others about it." Muhammad said, "Say, O Sufyán, 'I believe in God'; after which obey the commandments, and abandon the things forbidden."
+273	95	Learning	Go in quest of knowledge even unto China.
+290	97	Learning	Acquire knowledge. It enableth its possessor to distinguish right from wrong; it lighteth the way to Heaven; it is our friend in the desert, our society in solitude, our companion when friendless; it guideth us to happiness; it sustaineth us in misery; it is an ornament amongst friends, and an armour against enemies.
+367	110	Riches	Verily, of things which I fear for you, after my departure from the world, is this: that the ornaments and goods of the world may be pleasing to you. Then a man said, "O Messenger of God! doth good bring harm?" Lord Muhammad said, "Verily good doth not bring harm: I mean if there be much wealth, it is a blessing; and there is no harm in it, unless from stinginess and extravagance; like the spring, which causeth nothing to grow but what is good: and harm and destruction are from the abuse thereof."
+391	115	Servants	Zaid, Muhammad's servant, said, "I served Muhammad ten years, and he never said 'Uff,' to me; and never said, 'Why did you do so?' and never said, 'Why did you not do so?'"

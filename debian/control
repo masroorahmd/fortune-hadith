@@ -1,0 +1,59 @@
+Source: hadith
+Section: games
+Priority: optional
+Maintainer: Masroor Ahmad <debian@masroor.de>
+Build-Depends:
+ debhelper-compat (= 13),
+ fortune-mod,
+ python3:any,
+Standards-Version: 4.7.3
+# Both of these are redundant with dpkg >= 1.22.13, which defaults them, and
+# lintian 2.129 reports them as such -- but only at pedantic level. The older
+# lintian on an Ubuntu LTS runner reports their *absence* as a warning. Kept,
+# because a pedantic tag costs nothing and a warning fails the build.
+Rules-Requires-Root: no
+Homepage: https://github.com/masroorahmd/fortune-hadith
+Vcs-Browser: https://github.com/masroorahmd/fortune-hadith
+Vcs-Git: https://github.com/masroorahmd/fortune-hadith.git
+
+Package: hadith
+Architecture: all
+Depends:
+ fortune-mod,
+ fortunes-hadith (= ${source:Version}),
+ ${misc:Depends},
+Description: sayings of the Prophet Muhammad(saw), in the shape of fortune
+ hadith prints a saying of the Prophet Muhammad(saw), chosen at random, the way
+ fortune(6) prints a cookie. Run from a shell profile it gives one saying a
+ login; run with -m it is a plain-text search over the corpus.
+ .
+ The corpus is "The Sayings of Muhammad", collected and translated by Abdullah
+ al-Mamun al-Suhrawardy and published in 1905: 439 sayings arranged over 85
+ topics, plus four the book prints in its preamble. It is in the public domain
+ in the United States and in Europe.
+ .
+ This package is the command. The sayings themselves are in fortunes-hadith,
+ which can also be installed on its own if all you want is for fortune(6) to
+ draw from them along with everything else.
+
+Package: fortunes-hadith
+Architecture: all
+Depends:
+ ${misc:Depends},
+Recommends:
+ fortune-mod,
+Description: sayings of the Prophet Muhammad(saw) - data files for fortune
+ Two fortune(6) cookie files holding "The Sayings of Muhammad", collected and
+ translated by Abdullah al-Mamun al-Suhrawardy and published in 1905: 439
+ sayings arranged over 85 topics, plus four the book prints in its preamble.
+ It is in the public domain in the United States and in Europe.
+ .
+ The sayings are installed twice. hadith-suhrawardy is a modernisation of
+ Suhrawardy's Victorian English - "pays" for "payeth", "you" for "thou" - made
+ so that they read as living language rather than as a museum piece.
+ hadith-suhrawardy-1905 is the original wording unaltered, installed beside it
+ so that every change made stays a diff a reader can check.
+ .
+ Installing this package alone is enough for fortune(6) to draw from them. The
+ hadith package adds a command that draws from these two corpora only, and
+ makes the modernised text the default.

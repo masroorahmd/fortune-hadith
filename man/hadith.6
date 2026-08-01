@@ -1,0 +1,124 @@
+.TH HADITH 6 "2026-08-01" "hadith 0.1.0" "Games"
+.SH NAME
+hadith \- print a saying of the Prophet Muhammad(saw)
+.SH SYNOPSIS
+.B hadith
+.RB [ \-\-1905 | \-\-both ]
+.RI [ "fortune options" ]
+.br
+.B hadith
+.B \-\-list
+.SH DESCRIPTION
+.B hadith
+prints one saying of the Prophet Muhammad(saw), chosen at random, the way
+.BR fortune (6)
+prints a cookie.
+.PP
+The corpus is
+.IR "The Sayings of Muhammad" ,
+collected and translated by Abdullah al-Mamun al-Suhrawardy and published in
+1905: 439 sayings arranged over 85 topics, plus four the book prints in its
+preamble. It is in the public domain.
+.PP
+Two corpora are installed. The default,
+.IR hadith\-suhrawardy ,
+is a modernisation of Suhrawardy's Victorian English \(em
+.I pays
+for
+.IR payeth ,
+.I you
+for
+.I thou
+\(em made so that the sayings read as living language rather than as a museum
+piece. The 1905 wording is installed beside it as
+.I hadith\-suhrawardy\-1905
+unaltered, so that every change made to it stays a diff a reader can check.
+.PP
+Both are ordinary
+.BR fortune (6)
+cookie files. Nothing here is needed to use them; this command only knows
+where they live and which of the two is the default.
+.SH OPTIONS
+.TP
+.B \-\-1905
+Draw from the original 1905 wording instead of the modernised text.
+.TP
+.B \-\-both
+Draw from both corpora, each saying equally likely. Since the two hold the
+same sayings in two registers, this is a coin flip over the wording.
+.TP
+.B \-\-list
+Print the paths of the installed corpus files and exit.
+.TP
+.B \-\-help
+Print a usage summary and exit.
+.PP
+Every other option is passed to
+.BR fortune (6)
+unchanged. The ones worth knowing:
+.TP
+.B \-s
+Short sayings only. The cut falls at 160 characters by default, and the median
+entry is 186 with its attribution line on it, so this passes 160 of the 443.
+Raise it with
+.B \-n
+for a wider selection.
+.TP
+.B \-l
+Long sayings only.
+.TP
+.BI \-n " length"
+Where the cut between short and long falls. The default is 160 characters.
+.TP
+.BI \-m " pattern"
+Print every saying matching the regular expression, rather than one at random.
+This makes the command a plain-text search over the corpus.
+.TP
+.B \-c
+Name the file the saying came from.
+.SH ENVIRONMENT
+.TP
+.B HADITH_FORTUNES
+Directory holding the cookie files. Defaults to
+.IR /usr/share/games/fortunes .
+Useful for testing a corpus before installing it.
+.SH FILES
+.TP
+.I /usr/share/games/fortunes/hadith\-suhrawardy
+The modernised text, and the default.
+.TP
+.I /usr/share/games/fortunes/hadith\-suhrawardy\-1905
+The 1905 text as Suhrawardy set it.
+.SH EXAMPLES
+Put a saying in every login shell:
+.PP
+.RS
+.nf
+echo hadith >> ~/.bashrc
+.fi
+.RE
+.PP
+Every saying that mentions mothers, in both registers:
+.PP
+.RS
+.nf
+hadith \-\-both \-m mother
+.fi
+.RE
+.SH NOTES
+The eulogy
+.RB ( saw )
+after the Prophet's name is added when the cookie files are rendered, and is
+in neither corpus. That separation is deliberate: the 1905 text in the source
+is a faithful reproduction of a public\-domain book, and the modernisation is
+meant to diff cleanly against it.
+.SH SEE ALSO
+.BR fortune (6),
+.BR strfile (1)
+.PP
+The source scan the corpus was made from:
+.br
+.I https://archive.org/details/the\-sayings\-of\-muhammad_202401
+.SH AUTHOR
+The sayings were collected and translated by Abdullah al-Mamun al-Suhrawardy
+(d. 1935). This packaging and the modernisation are by Masroor Ahmad.

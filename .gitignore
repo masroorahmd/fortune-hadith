@@ -1,0 +1,38 @@
+__pycache__/
+*.pyc
+
+# Source text that is not ours to redistribute — see DATA-LICENSE.md.
+#
+# corpus/raw/  the OCR of the 1905 scan, downloaded from archive.org. The
+#              sayings themselves are public domain and are committed, in
+#              corpus/*.jsonl; the raw djvu and ABBYY dumps are not, because
+#              they also carry the reprint's own preface and introduction,
+#              which are still in copyright.
+# reference/   a copyrighted modern translation, held only for checking the
+#              corpus against. A verification reference, never a shipped
+#              corpus, and never redistributed.
+corpus/raw/
+reference/
+
+# Build products of tools/make_fortune.py, regenerated bit-identically from
+# corpus/*.jsonl. debian/rules builds them and `debian/rules clean` removes
+# them again, so they must not be in the orig tarball either.
+fortune/
+
+# Debian build output, when built in tree rather than with tools/build-deb.sh.
+*.deb
+*.dsc
+*.buildinfo
+*.changes
+*.orig.tar.*
+*.debian.tar.*
+debian/hadith/
+debian/fortunes-hadith/
+debian/files
+debian/*.debhelper
+debian/*.substvars
+debian/debhelper-build-stamp
+debian/.debhelper/
+
+# JetBrains
+.idea/

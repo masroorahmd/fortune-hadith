@@ -1,0 +1,84 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # build-essential is an implicit build dependency of every Debian source
+      # package and dpkg-checkbuilddeps enforces it, even for one that compiles
+      # nothing. It is preinstalled on most developer machines, which is
+      # exactly why it has to be named here.
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            build-essential debhelper devscripts fakeroot fortune-mod \
+            lintian python3
+
+      - name: Build
+        run: ./tools/build-deb.sh "$RUNNER_TEMP/hadith-build"
+
+      # --profile debian is not optional here. The runner is Ubuntu, and
+      # Ubuntu's lintian profile reports `unstable` in debian/changelog as a
+      # bad distribution. It is right for Ubuntu and wrong for this package,
+      # which targets Debian.
+      #
+      # newer-standards-version is suppressed because the runner's lintian is
+      # older than the policy this package targets. It fires on the runner and
+      # not on a current unstable, and the fix it implies -- downgrading
+      # Standards-Version to match an outdated checker -- would be backwards.
+      - name: Lintian
+        run: |
+          lintian --version
+          lintian --profile debian --pedantic --fail-on error,warning \
+            --suppress-tags initial-upload-closes-no-bugs,newer-standards-version \
+            "$RUNNER_TEMP"/hadith-build/hadith_*_amd64.changes
+
+      # Installed separately and in this order, so that a data package which
+      # has stopped standing on its own fails here rather than being propped
+      # up by the command package being unpacked alongside it.
+      - name: Data package stands alone
+        run: |
+          sudo dpkg -i "$RUNNER_TEMP"/hadith-build/fortunes-hadith_*_all.deb
+          test ! -e /usr/games/hadith
+          fortune /usr/share/games/fortunes/hadith-suhrawardy
+
+      - name: Install and smoke-test
+        run: |
+          sudo dpkg -i "$RUNNER_TEMP"/hadith-build/hadith_*_all.deb
+          set -x
+          hadith
+          hadith --1905
+          hadith --both
+          hadith -s
+          hadith --list
+          test "$(hadith -m 'feet of mothers' | grep -c 'feet of mothers')" = 2
+          man 6 hadith | head -1
+
+      # The cookie files are generated at build time. If they ever stop
+      # matching what corpus/*.jsonl produces, the corpus and the package have
+      # drifted apart and the diff is the only place that shows.
+      - name: Corpus renders reproducibly
+        run: |
+          python3 tools/make_fortune.py --src corpus/suhrawardy-modern.jsonl \
+            --field modern --out /tmp/check-modern
+          python3 tools/make_fortune.py --src corpus/suhrawardy-1905.jsonl \
+            --field text --out /tmp/check-1905
+          diff /tmp/check-modern /usr/share/games/fortunes/hadith-suhrawardy
+          diff /tmp/check-1905 /usr/share/games/fortunes/hadith-suhrawardy-1905
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: hadith-deb
+          path: |
+            ${{ runner.temp }}/hadith-build/*.deb
+            ${{ runner.temp }}/hadith-build/*.dsc
+            ${{ runner.temp }}/hadith-build/*.tar.*

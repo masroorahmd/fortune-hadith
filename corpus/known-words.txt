@@ -1,0 +1,67 @@
+# Words that are correct in this text but absent from the system dictionaries.
+# Keeping them here means qa.py only reports genuine OCR damage.
+
+# proper nouns and Islamic terms
+Abi
+Amir
+Asma
+Auf
+Ashbah
+Evangel
+Haidah
+Hijrah
+Hirah
+Ibrahim
+Iman
+Imam
+Kais
+Labid
+Magian
+Medinah
+Mu'min
+Mu'mins
+Muslim
+Muslims
+Wabisah
+Zaid
+Zainab
+Ziad
+Yazid
+mi'raj
+
+# archaic or uncommon English used by the 1905 translation
+Admonisher
+bestower
+bringers
+cherisher
+giver
+hadst
+hast
+incommode
+necessitous
+onetenth
+peradventure
+repenter
+shedders
+therefor
+unencumbered
+utterer
+wherewith
+whoso
+wouldst
+
+# further proper nouns surfaced by qa.py
+A'ishah
+Abd
+Aishah
+Amir
+Dost
+Sa'd
+Uff
+Almsgiving
+S'ad
+S'al
+Shijra
+Wabisah
+Harut
+Marut

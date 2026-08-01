@@ -1,0 +1,123 @@
+# Curated OCR corrections for Suhrawardy, "The Sayings of Muhammad" (1905).
+#
+# Only entries with exactly one plausible reading belong here. Two systematic
+# defects account for most of them:
+#   * the scan reads the acute accent of the transliteration as an "i"
+#     (Rasúl -> Rasil, Islám -> Islim, Kur'án -> Kur'in)
+#   * it confuses e with c (doeth -> docth, each -> cach, seek -> seck)
+# Anything ambiguous is deliberately absent, so that qa.py keeps reporting it
+# for proofreading against the scan.
+#
+# Format: wrong<TAB>right   Matching is whole-word and case-sensitive.
+
+# -- transliteration: acute accent misread as i ------------------------------
+Rasil	Rasúl
+Rasiil	Rasúl
+Rasiil's	Rasúl's
+Islim	Islám
+Iskim	Islám
+Isliin	Islám
+stim	Islám
+Kur'in	Kur'án
+Kur'an	Kur'án
+Imin	Imán
+Uthmin	Uthmán
+Rabmin	Rahmán
+Sufyin	Sufyán
+Ramadin	Ramadán
+Jihid	Jihád
+Yasuf	Yúsuf
+Wakkis	Waqqás
+Ji'rinah	Ji'ránah
+'Ubidah	'Ubádah
+'Kiishah	'Áishah
+Mu'dz	Mu'ádh
+Mu'iz	Mu'ádh
+Ziid	Ziad
+Muhanynad	Muhammad
+MUNAMMAD	MUHAMMAD
+
+# -- e misread as c ----------------------------------------------------------
+# The three -eth forms at the end of this block lived in the corpus unreported
+# for as long as qa.py waved through any token ending in -eth without a
+# dictionary check. `cateth` is the one that survived even the fix: it derives
+# to `cats`, a real word, so only reading the text finds it.
+docth	doeth
+cach	each
+seck	seek
+cither	either
+journcy	journey
+Meckness	Meekness
+licth	lieth
+kcep	keep
+meltcth	melteth
+sce	see
+Sce	See
+sceth	seeth
+secketh	seeketh
+cateth	eateth
+cating	eating
+picty	piety
+praiscth	praiseth
+secth	seeth
+subducth	subdueth
+dicth	dieth
+mect	meet
+carth	earth
+capacitics	capacities
+discascs	diseases
+exactcth	exacteth
+thcir	their
+sclf	self
+cunuch	eunuch
+powerfil	powerful
+joyfil	joyful
+firrhness	firmness
+tronble	trouble
+
+# -- words run together or split --------------------------------------------
+Iam	I am
+Ihave	I have
+itis	it is
+theie	their
+Haye	Have
+Gunt	Aunt
+Heaveh	Heaven
+Ilumine	Illumine
+
+# Found by comparing the two OCR passes over the scan (tools/abbyy_diff.py),
+# each read off the page image before being entered here. Where the two passes
+# disagreed the image decided: 318 is "her to", not ABBYY's "hereto", and 291
+# is "noble", which neither pass got.
+fel	hand
+itin	it in
+Aman	A man
+lic	lie
+fone	one
+Mudims	Muslims
+Iseck	I seek
+trast	trust
+Wabigah's	Wabisah's
+eam	earn
+timein	time in
+Te	It
+goble	noble
+tadoess	sadness
+herfto	her to
+Hartt	Harut
+Marit	Marut
+ptison	prison
+soulf	soul.
+Ma'giin	Ma'zún
+Sufyan	Sufyán
+Mu'aviyah	Mu'áviyah
+
+# Heading manglings. Applied to heading lines by the parser as well as to the
+# body text, so that a topic lost to the OCR comes back as data.
+wIpows	WIDOWS
+HUMIL	HUMILITY
+secker	seeker
+tfll	till
+©	O
+dialécts	dialects
+Mc	Me

@@ -1,0 +1,88 @@
+#!/bin/sh
+# hadith — print a saying of the Prophet Muhammad(saw), the way fortune(6)
+# prints a cookie.
+#
+# This is a thin wrapper. The corpora are ordinary fortune cookie files and
+# work with fortune(6) directly; what the wrapper adds is knowing where they
+# live and which of the two is the default.
+#
+# Unrecognised options are handed to fortune rather than rejected, so that
+# `hadith -s`, `hadith -m mother` and the rest behave as a fortune user
+# expects without this script having to track fortune's option list.
+
+set -eu
+
+FORTUNES="${HADITH_FORTUNES:-/usr/share/games/fortunes}"
+
+MODERN=hadith-suhrawardy
+ORIGINAL=hadith-suhrawardy-1905
+
+corpus="$MODERN"
+both=0
+
+usage() {
+	cat <<'EOF'
+Usage: hadith [--1905|--both] [fortune options]
+
+  --1905   the original 1905 wording instead of the modernised text
+  --both   draw from both, each equally likely
+  --list   name the installed corpus files and exit
+  --help   this text
+
+Anything else is passed to fortune(6). The useful ones there:
+
+  -s          short sayings only        -m REGEX  every saying matching REGEX
+  -l          long sayings only         -n NUM    where the short/long cut falls
+  -c          name the file it came from
+
+Examples:
+  hadith                    a saying, modern wording
+  hadith -s                 a short one
+  hadith --1905             the same corpus as Suhrawardy set it in 1905
+  hadith -m 'mother'        every saying that mentions mothers
+EOF
+}
+
+# Rotate through the argument list, keeping what is not ours for fortune.
+argc=$#
+i=0
+while [ "$i" -lt "$argc" ]; do
+	arg="$1"
+	shift
+	i=$((i + 1))
+	case "$arg" in
+	--1905) corpus="$ORIGINAL" ;;
+	--both) both=1 ;;
+	--list)
+		echo "$FORTUNES/$MODERN"
+		echo "$FORTUNES/$ORIGINAL"
+		exit 0
+		;;
+	-h | --help)
+		usage
+		exit 0
+		;;
+	*) set -- "$@" "$arg" ;;
+	esac
+done
+
+# fortune reports a missing cookie file only as "Invalid argument", which is
+# not a useful thing to hand a user.
+for f in "$corpus" $([ "$both" = 1 ] && echo "$MODERN $ORIGINAL"); do
+	if [ ! -f "$FORTUNES/$f" ]; then
+		echo "hadith: corpus not found: $FORTUNES/$f" >&2
+		exit 1
+	fi
+	if [ ! -f "$FORTUNES/$f.dat" ]; then
+		echo "hadith: index missing: $FORTUNES/$f.dat (run strfile)" >&2
+		exit 1
+	fi
+done
+
+# Absolute paths throughout: given a relative one, fortune 1.99 prints two
+# spurious errors on a search path it tried first, and then works anyway.
+if [ "$both" = 1 ]; then
+	exec fortune "$@" -e "$FORTUNES/$MODERN" "$FORTUNES/$ORIGINAL"
+else
+	exec fortune "$@" "$FORTUNES/$corpus"
+fi

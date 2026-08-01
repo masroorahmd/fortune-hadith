@@ -1,0 +1,106 @@
+# Victorian -> contemporary English, word level.
+#
+# The 1905 text is a human translation and its meaning is not in question; what
+# dates it is the register. This table carries only substitutions that are
+# meaning-preserving in every context the corpus uses, so that the change can be
+# reviewed as data rather than trusted as model output.
+#
+# The -eth verbs are NOT listed here. There are 135 distinct ones and they are
+# derived algorithmically in modernise.py against the system dictionary, which
+# gets 134 of them right; the exceptions sit at the bottom of this file. Listing
+# all 135 by hand would hide the two that are OCR damage rather than archaism.
+#
+# archaic	modern	note
+
+# --- pronouns -------------------------------------------------------------
+# Address to God keeps its capital: modern devotional English still writes
+# "You" and "Your" of God, so the reverence the capital carries is not lost.
+thou	you
+Thou	You
+thee	you
+Thee	You
+thy	your
+Thy	Your
+thyself	yourself
+Thyself	Yourself
+thine	yours	before a vowel it means "your"; handled in code
+Thine	Yours
+ye	you
+Ye	You
+mine	my	only where "mine enemies" style; handled in code
+
+# --- auxiliaries and irregular verbs -------------------------------------
+hath	has
+Hath	Has
+hast	have
+doth	does
+Doth	Does
+dost	do
+Dost	Do
+saith	says
+Saith	Says
+art	are
+wert	were
+shalt	will
+wilt	will
+didst	did
+canst	can
+knowest	know
+sayest	say
+seest	see
+speakest	speak
+givest	give
+hadst	had
+wouldst	would
+shouldst	should
+couldst	could
+mayest	may
+mayst	may
+
+# --- adverbs and connectives ---------------------------------------------
+verily	truly
+Verily	Truly
+unto	to
+Unto	To
+whoso	whoever
+Whoso	Whoever
+whosoever	whoever
+Whosoever	Whoever
+whatsoever	whatever
+Whatsoever	Whatever
+wheresoever	wherever
+whensoever	whenever
+whomsoever	whomever
+whereby	by which
+wherein	in which
+whereof	of which
+whereto	to which
+betwixt	between
+nay	no
+save	except	only as a preposition; handled in code
+thence	from there
+hither	here
+thither	there
+oft	often
+ere	before
+lest	in case
+albeit	although
+
+# --- -eth forms the dictionary derives wrongly ----------------------------
+# The derivation is right for 131 of the 135 forms in the corpus. It fails
+# where the wrong stem is also an English word, so the dictionary cannot break
+# the tie: `putt` and `aide` are real, and `teeth` is not a verb at all.
+putteth	puts	`putt` is a real word, so the stem test picks golf
+aideth	aids	`aide` is a real word
+teeth	teeth	a noun, not an -eth verb; left alone
+Teeth	Teeth
+
+# --- OCR damage that used to be repaired here ---------------------------
+# `secketh`, `cateth` and `sceth` were repaired in this file for as long as
+# nothing else could see them. They are now in corrections.tsv, where they
+# belong, so nothing is left here — but the reason is worth keeping: qa.py used
+# to wave through any token ending in -eth without a dictionary check, and all
+# three hid behind that.
+
+sawest	saw
+sawst	saw

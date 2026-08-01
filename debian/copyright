@@ -1,0 +1,86 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: hadith
+Upstream-Contact: Masroor Ahmad <debian@masroor.de>
+
+Files: *
+Copyright: 2026 Masroor Ahmad <debian@masroor.de>
+License: GPL-3.0+
+
+Files:
+ corpus/suhrawardy-1905.jsonl
+ corpus/recovered.tsv
+ corpus/proofed.tsv
+ corpus/corrections.tsv
+ corpus/artefacts.tsv
+Copyright: 1905 Abdullah al-Mamun al-Suhrawardy
+License: public-domain
+Comment:
+ "The Sayings of Muhammad", collected and translated by Abdullah al-Mamun
+ al-Suhrawardy, first published in 1905. Source scan:
+ https://archive.org/details/the-sayings-of-muhammad_202401
+ .
+ The scan is of a later reprint, and only the 1905 sayings themselves are
+ taken from it. The reprint's preface and introduction are under their own
+ copyright and are excluded by the parser; no part of them is in this
+ package.
+ .
+ recovered.tsv, proofed.tsv, corrections.tsv and artefacts.tsv hold nothing
+ but readings of that same public-domain text: sayings the OCR destroyed,
+ transcribed from the page images, and the anchored repairs that undo
+ scanning damage. They are transcription and carry no separate copyright
+ claim; they are listed here so that every file is accounted for.
+
+Files:
+ corpus/suhrawardy-modern.jsonl
+ corpus/modernised.tsv
+ corpus/modern-lexicon.tsv
+Copyright: 2026 Masroor Ahmad <debian@masroor.de>
+License: CC0-1.0
+Comment:
+ A modernisation of the 1905 English: "pays" for "payeth", "you" for "thou",
+ and 64 hand-written rewrites where no word-level substitution was enough.
+ The 1905 wording is kept beside it in corpus/suhrawardy-1905.jsonl, so the
+ whole of the change is a diff.
+ .
+ The underlying text being in the public domain, this work is the author's
+ own and is dedicated to the public domain in turn.
+
+Files: debian/*
+Copyright: 2026 Masroor Ahmad <debian@masroor.de>
+License: GPL-3.0+
+
+License: public-domain
+ Abdullah al-Mamun al-Suhrawardy died in 1935 and the book was published in
+ 1905. Copyright has therefore expired in every jurisdiction relevant to
+ Debian's distribution of it:
+ .
+   * United States: published before 1930, so in the public domain there
+     regardless of any formality.
+   * Germany, and the European Union generally: 70 years post mortem
+     auctoris, which elapsed at the end of 2005.
+   * United Kingdom, where the book was published: likewise 70 years p.m.a.
+ .
+ The translation is the part that could carry a copyright of its own, and it
+ is Suhrawardy's; the sayings he was translating are older still. No estate
+ or successor holds any right in it.
+
+License: CC0-1.0
+ To the extent possible under law, the author has waived all copyright and
+ related or neighbouring rights to this work.
+ .
+ On Debian systems, the complete text of the CC0 1.0 Universal licence can be
+ found in "/usr/share/common-licenses/CC0-1.0".
+
+License: GPL-3.0+
+ This program is free software: you can redistribute it and/or modify it
+ under the terms of the GNU General Public License as published by the Free
+ Software Foundation, either version 3 of the License, or (at your option)
+ any later version.
+ .
+ This program is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ more details.
+ .
+ On Debian systems, the complete text of the GNU General Public License
+ version 3 can be found in "/usr/share/common-licenses/GPL-3".

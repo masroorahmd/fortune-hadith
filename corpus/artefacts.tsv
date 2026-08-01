@@ -1,0 +1,151 @@
+# Debris the OCR pulled into an entry, and the repair for it.
+#
+# This is the third repair layer, and it exists because the other two do not
+# fit what is wrong here:
+#
+#   corrections.tsv  substitutes whole words, everywhere they occur. Most of
+#                    the damage below is punctuation, a footnote marker or a
+#                    page's running head, none of which is a word.
+#   proofed.tsv      replaces an entry with a fresh transcription. Retyping a
+#                    600-character entry to delete one asterisk introduces more
+#                    risk than it removes.
+#
+# So a repair here is a single anchored edit: `find` must occur in the entry
+# **exactly once**. qa.py refuses to apply it otherwise — 0 matches means the
+# line is stale and is reported like a redundant recovered.tsv line, more than
+# one means the edit is ambiguous and would be a guess. That is what stops a
+# repair from quietly landing in the wrong place after the parser changes.
+#
+# Every line was checked against the page image, which is why the page is
+# recorded. The scan page is the PDF page; the book's printed folio runs three
+# behind it. Two OCR passes agreeing was NOT taken as sufficient — see saying
+# 171, where they agree and the page still does not settle it.
+#
+# Format: number<TAB>find<TAB>replace<TAB>scan page<TAB>note
+# An empty `replace` deletes.
+
+# --- the next saying bled in, and its number was destroyed --------------
+# The same defect as trap 4 in CLAUDE.md, twice. Both of the swallowed sayings
+# were already recovered into recovered.tsv, so the corpus looked complete
+# while the duplicate went on being printed under the wrong number.
+4	 $- The nearest to me are the abstinent, whoever they are, wherever they are.		53	saying 5, its number OCR'd as "$-"
+100	 tor. Do not speak ill of the dead.		69	saying 101, its number OCR'd as "tor."
+
+# --- text the OCR lost outright -----------------------------------------
+# These two are not debris but the opposite: the djvu pass dropped the end of
+# the saying. The ABBYY pass has both, and the page confirms both.
+224	your sandals;	your sandals; and the Fire likewise.	88	djvu ended at the semicolon
+356	nor a violent	nor a violent speaker.	108	djvu ended mid-phrase
+
+# --- footnote markers glued to the text ---------------------------------
+# The book sets these as superscript numerals; the djvu reads them as * and the
+# ABBYY pass as 1 or '. Either way they are apparatus, not the saying.
+33	animal." *	animal."	58	footnote 1
+47	wrong*;	wrong;	61	footnote 1
+62	Ignorance.*	Ignorance.	64	footnote 2
+75	are so.*	are so.	66	footnote 1
+204	It is."*	It is."	85	footnote 1
+206	camel." *	camel."	85	footnote 2
+242	(Renunciation)?"*	(Renunciation)?"	91	footnote 1
+324	I live.*	I live.	103	footnote 1
+327	"*O God!	"O God!	104	footnote marker read into the opening quote
+430	 + This refers to the practice of female infanticide which Muhammad abolished,		120	the whole footnote bled in
+
+# --- running heads and section headings pulled into the body ------------
+# Page furniture. 355 swallowed the heading of the section that follows it,
+# which is the same class of defect as trap 6 in CLAUDE.md.
+196	 OF GoD		83	running head of the next page
+355	 Of PRIDE (see also under * Humility')		108	the next section's heading
+395	 OF SIN		115	running head of the next page
+398	 Of SIN		116	running head of the next page
+
+# --- specks of ink read as characters -----------------------------------
+26	!_	!	57	`O our cherisher !`
+86	his host. P	his host.	67	a mark in the right margin
+88	Entertain him.",	Entertain him."	68	stray comma after the closing quote
+220	acquit thee." By	acquit thee."	87	stray letters after the closing quote
+220	"* Goodness	" Goodness	87	speck after the opening quote
+229	son!" 'Then	son!" Then	89	speck before `Then`
+236	arrogance. \ There	arrogance. There	90	speck between the sentences
+279	'one degree	one degree	96	stray quote before `one`
+307	offender.,	offender.	100	stray comma after the full stop
+320	Then | came	Then I came	102	a damaged `I`
+329	weak | Thou	weak! Thou	104	a damaged `!`
+366	cry much. &	cry much.	110	stray mark after the full stop
+25	"* Nothing	" Nothing	56	speck after the opening quote
+10	There 'is no	There is no	54	speck before `is`
+38	Every 'nan who	Every man who	60	speck, and m read as n
+108	Adam, 'one of them	Adam, one of them	71	speck before `one`
+128	walls, 'one on each	walls, one on each	73	speck before `one`
+128	ye will fall" Now	ye will fall." Now	73	the full stop closing the quotation was lost
+166	no fault 'upon them	no fault upon them	79	speck before `upon`
+24	give?"'	give?"	56	stray quote after the closing quote
+24	oppressed?"*	oppressed?"	56	stray mark after the closing quote
+242	Islám?"'	Islám?"	91	stray quote after the closing quote
+
+# --- the e/c confusion, where the wrong reading is itself a word --------
+# `cateth`, `secketh` and `sceth` are in corrections.tsv, because there the
+# damaged form is not English and a whole-word substitution is safe. These two
+# are not: the OCR turned `eat` into `cat`, and saying 32 is about an actual
+# cat. A global correction would rewrite it, so the repair has to be anchored.
+416	from beating this	from hearing this	119	`hearing` read as `beating`; both are real words
+264	his 'own labour	his own labour	94	speck before `own`
+389	what you cat yourself	what you eat yourself	114	e/c, and `cat` is a real word
+414	as you cat yourself	as you eat yourself	118	e/c, and `cat` is a real word
+414	(Mu'áviyah b, Haidah)	(Mu'áviyah b. Haidah)	118	`b.` for ibn, read as a comma
+
+# --- a full stop read as a comma ----------------------------------------
+# The book ends every saying on a full stop. Where the djvu has a comma and
+# the ABBYY pass has a full stop, the page was still opened, and in each case
+# below it prints a full stop.
+28	 MM		57	stray letters after the full stop
+28	reward of ore alms	reward of one alms	57	a speck over the n: the page prints `oñe`
+29	if poor,	if poor.	58
+60	cleanliness,	cleanliness.	63
+68	prompting them,	prompting them.	65
+121	dispositions,	dispositions.	72
+131	Abode of Bliss,	Abode of Bliss.	74
+152	blot out the latter,	blot out the latter.	77
+153	in adversity,	in adversity.	77
+154	well to abstain,	well to abstain.	77
+181	not oppress them,	not oppress them.	81
+187	like magic,	like magic.	82
+189	burneth wood,	burneth wood.	82
+215	to mankind,	to mankind.	86
+265	lunar month,	lunar month.	94
+279	the prophets,	the prophets.	96
+318	his nurse,"	his nurse."	102
+328	family and wealth,	family and wealth.	104
+364	contention and strife,	contention and strife.	109
+365	upon themselves,	upon themselves.	109
+374	his own family,	his own family.	111
+379	helping relations,	helping relations.	112
+380	if poor,	if poor.	112
+385	lunar month,	lunar month.	113
+386	honest means,	honest means.	113
+
+# --- one the page does not settle ---------------------------------------
+# 171 is the exception that justifies opening the images at all. Both OCR
+# passes disagree (djvu `religion,`, ABBYY `religiory`) and the page itself
+# prints a mark with a descender — a comma, or a full stop that has taken ink
+# from the `n` above it. Every other saying in the book ends on a full stop and
+# the sentence is complete, so it is set as one; but this is a judgement, not a
+# reading, and it is the only line in this file that is.
+171	God's religion,	God's religion.	80	AMBIGUOUS on the page — see the note above
+
+# --- flagged by the sweep, opened at the page, and correct ----------------
+# The debris sweep cannot tell a nested closing quote (`...lies.'"`) from the
+# stray one that a speck of ink produces, and it cannot tell the apostrophe
+# opening `'Áishah` from a stray mark either. These entries were opened and are
+# right as they stand. Recording that here is what keeps the sweep useful: what
+# it reports is then the unreviewed, not the merely flagged.
+#
+# Format: number<TAB>OK<TAB><TAB>page<TAB>why
+25	OK		56	the apostrophe belongs to the name 'Áishah
+136	OK		75	a real nested quote: say 'there is no deity but God'
+81	OK		67	nested quote closing: ...towards people.'"
+315	OK		101	nested quote closing: ..."Be the same to you."'"
+317	OK		101	nested quote closing: ...do so?'"
+320	OK		102	nested quote closing: ...'Worship not me.'"
+391	OK		115	nested quote closing: ...do so?'"
+424	OK		120	nested quote closing: ...hunger with lies.'"
